@@ -38,20 +38,20 @@ export class Students extends Component {
             <div style={{ background: '#f7f7f7', padding: '5px' }}>
                 <Label>Students</Label>
             </div>
-            <div style={{ padding: '10px' }}>
-                <List items={this.props.items} onRenderCell={this.renderCheckboxCell} />
-                <Button>Add</Button>
+            <div style={{ padding: '0px' }}>
+            
+            <Button>Add</Button>
                 <Button>Clear</Button>
                 <PrimaryButton>Download</PrimaryButton>
-                
+                <List items={this.props.items} onRenderCell={this.renderCheckboxCell} />
             </div>
         </div>
     }
 
     renderCheckboxCell(item, index) {
         return (
-            <div style={{ padding: '5px' }} >
-                <Checkbox label={item.name} />
+            <div style={{ padding: '10px' , background: index%2 === 0 ? '#ddd' : '#eee' }} >
+                <Checkbox label={item.name}/>
             </div>
         );
     }
