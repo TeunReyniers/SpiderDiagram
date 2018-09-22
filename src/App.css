@@ -18,6 +18,22 @@
   font-size: large;
 }
 
+.FullScreen{
+  position: absolute;
+  top: 0px; 
+  bottom: 0px; 
+  left: 0px; 
+  right: 0px;
+}
+
+.FullBottom{
+  position: absolute;
+  top: 45px; 
+  bottom: 0px; 
+  left: 0px; 
+  right: 0px;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
