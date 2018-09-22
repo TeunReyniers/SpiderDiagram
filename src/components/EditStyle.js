@@ -26,7 +26,7 @@ export class EditStyle extends Component {
 
             </div>
             <div style={{ button: '100%', height: '50px' }}>
-                <PrimaryButton>Save</PrimaryButton>
+            <PrimaryButton>Save</PrimaryButton>
                 <Button>Cancel</Button>
             </div>
         </div>
