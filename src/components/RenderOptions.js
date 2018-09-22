@@ -8,7 +8,7 @@ import { TextField } from 'office-ui-fabric-react/lib/TextField'
 import { Slider } from 'office-ui-fabric-react/lib/Slider';
 import { PrimaryButton, Button } from 'office-ui-fabric-react';
 
-export class Students extends Component {
+export class RenderOptions extends Component {
     constructor() {
         super()
 
@@ -19,25 +19,30 @@ export class Students extends Component {
         return <div style={{
             background: '#eee',
             margin: '0px',
-            overflow: 'auto',
         }}>
-            
-            <div style={{ padding: '0px' }}>
-            
-            <Button>Add</Button>
-                <Button>Clear</Button>
-                <PrimaryButton>Download</PrimaryButton>
-                <List items={this.props.items} onRenderCell={this.renderCheckboxCell} />
-            </div>
-        </div>
-    }
 
-    renderCheckboxCell(item, index) {
-        return (
-            <div style={{ padding: '10px' , background: index%2 === 0 ? '#ddd' : '#eee' }} >
-                <Checkbox label={item.name}/>
+            <div style={{ padding: '10px' }}>
+                <div className='flexColumns'>
+                    <div style={{ flex: '1 0' }}>
+                        <TextField label='width'
+                            value='1000'
+                            onGetErrorMessage={this._getErrorMessage}></TextField>
+                    </div>
+                    <div style={{ flex: '1 0' }}>
+                        <TextField label='height'
+                            value='1200'
+                            onGetErrorMessage={this._getErrorMessage}></TextField>
+                    </div>
+                </div>
+                <Slider
+                    label="Scale"
+                    max={100}
+                    value={100}
+                    showValue={true}
+                />
             </div>
-        );
+
+        </div>
     }
 
     _getErrorMessage(value) {

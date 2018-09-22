@@ -16,18 +16,16 @@ export class EditStyle extends Component {
     }
 
     render() {
-        return <div style={{ margin: '0px', height: '100%' , position: 'relative'}}>
+        return <div style={{ margin: '0px', height: '100%' }}>
             <div style={{ width: '40%' }}>
-                <TextField placeholder="A name to reconize the style"
+                <TextField placeholder="A name to reconize the type"
                     onGetErrorMessage={this._getErrorMessage}
                     label="Name"></TextField>
+                <PrimaryButton>Save</PrimaryButton>
+                <Button>Cancel</Button>
             </div>
             <div style={{ background: 'blue' }}>
 
-            </div>
-            <div style={{ button: '100%', height: '50px' }}>
-                <PrimaryButton>Save</PrimaryButton>
-                <Button>Cancel</Button>
             </div>
         </div>
     }
