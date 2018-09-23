@@ -7,6 +7,7 @@ import { TextField } from 'office-ui-fabric-react/lib/TextField'
 import { ScrollablePane } from 'office-ui-fabric-react/lib/ScrollablePane';
 import { Sticky, StickyPositionType } from 'office-ui-fabric-react/lib/Sticky';
 import { PrimaryButton, Button } from 'office-ui-fabric-react/lib/Button';
+import { Group } from "./Group";
 
 export class EditStyle extends Component {
     constructor() {
@@ -16,17 +17,36 @@ export class EditStyle extends Component {
     }
 
     render() {
-        return <div style={{ margin: '0px', height: '100%' , position: 'relative'}}>
+        return <div style={{ margin: '0px', height: '100%', position: 'relative' }}>
             <div style={{ width: '40%' }}>
                 <TextField placeholder="A name to reconize the style"
                     onGetErrorMessage={this._getErrorMessage}
-                    label="Name"></TextField>
+                    label="Name"
+                    required={true}></TextField>
+                <Group title='Text'>
+                    <Group title='Title' level={1}>
+                        <TextField label='Position X'></TextField>
+                        <TextField label='Position Y'></TextField>
+                        <TextField label='Alignment'></TextField>
+                        <TextField label='Color'></TextField>
+                        <TextField label='Font'></TextField>
+                    </Group>
+                    <Group title='Title' level={1}>
+                    <Group title='Title' level={2}>
+                        <TextField label='Position X'></TextField>
+                        <TextField label='Position Y'></TextField>
+                        <TextField label='Alignment'></TextField>
+                        <TextField label='Color'></TextField>
+                        <TextField label='Font'></TextField>
+                    </Group>
+                    </Group>
+                </Group>
             </div>
             <div style={{ background: 'blue' }}>
 
             </div>
             <div style={{ button: '100%', height: '50px' }}>
-            <PrimaryButton>Save</PrimaryButton>
+                <PrimaryButton>Save</PrimaryButton>
                 <Button>Cancel</Button>
             </div>
         </div>

@@ -6,11 +6,15 @@ import { Label } from 'office-ui-fabric-react/lib/Label'
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
 import { Slider } from 'office-ui-fabric-react/lib/Slider';
-import { PrimaryButton, Button } from 'office-ui-fabric-react';
+import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { Panel } from "office-ui-fabric-react/lib/Panel";
+import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
 
 export class Students extends Component {
     constructor() {
         super()
+
+        this.state = { hideDialog: true }
 
         this._getErrorMessage = this._getErrorMessage.bind(this);
     }
@@ -21,21 +25,44 @@ export class Students extends Component {
             margin: '0px',
             overflow: 'auto',
         }}>
-            
+
             <div style={{ padding: '0px' }}>
-            
-            <Button>Add</Button>
-                <Button>Clear</Button>
+
+                <DefaultButton onClick={this._showDialog}>Add</DefaultButton>
+                <DefaultButton>Clear</DefaultButton>
                 <PrimaryButton>Download</PrimaryButton>
                 <List items={this.props.items} onRenderCell={this.renderCheckboxCell} />
             </div>
+            <Dialog
+                hidden={this.state.hideDialog}
+                onDismiss={this._closeDialog}
+                dialogContentProps={{
+                    type: DialogType.normal,
+                    title: 'Add students',
+                    subText:
+                        'Copy the values below and press insert.'
+                }}
+                modalProps={{
+                    titleAriaId: 'myLabelId',
+                    subtitleAriaId: 'mySubTextId',
+                    isBlocking: true,
+                    containerClassName: 'ms-dialogMainOverride'
+                }}>
+                <TextField multiline
+                    rows={5}
+                    required={true}></TextField>
+                <DialogFooter>
+                    <PrimaryButton onClick={this._closeDialog} text="Insert" />
+                    <DefaultButton onClick={this._closeDialog} text="Cancel" />
+                </DialogFooter>
+            </Dialog>
         </div>
     }
 
     renderCheckboxCell(item, index) {
         return (
-            <div style={{ padding: '10px' , background: index%2 === 0 ? '#ddd' : '#eee' }} >
-                <Checkbox label={item.name}/>
+            <div style={{ padding: '10px', background: index % 2 === 0 ? '#ddd' : '#eee' }} >
+                <Checkbox label={item.name} />
             </div>
         );
     }
@@ -52,4 +79,12 @@ export class Students extends Component {
         }
         return ''
     }
+
+    _showDialog = () => {
+        this.setState({ hideDialog: false });
+    };
+
+    _closeDialog = () => {
+        this.setState({ hideDialog: true });
+    };
 }
