@@ -25,8 +25,10 @@ const settingsStore = new Store({
   // We'll call our data file 'user-preferences'
   configName: 'settings',
   defaults: {
-    // 800x600 is the default size of our window
-    windowBounds: { width: 'teun', height: '600' }
+    settings: { 
+    canvas: { width: 1000, height: 1000 },
+    viewScale: 100,
+  }
   }
 });
 
@@ -55,6 +57,7 @@ class App extends Component {
     super();
 
     this.state = {
+      settings: settingsStore.get('settings'),
       styles: styleStore.get('styles'),
       types: typeStore.get('types'),
       students: [
@@ -112,7 +115,7 @@ class App extends Component {
           }}>
             <div>
               <Group title='render options'>
-                <RenderOptions items={this.state.students}></RenderOptions>
+                <RenderOptions items={this.settings} onChange={(c) => { this.setState({settings: c})}}></RenderOptions>
               </Group>
               <Group title='students'>
                 <Students items={this.state.students}></Students>
