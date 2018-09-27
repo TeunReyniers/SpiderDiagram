@@ -25,10 +25,10 @@ const settingsStore = new Store({
   // We'll call our data file 'user-preferences'
   configName: 'settings',
   defaults: {
-    settings: { 
-    canvas: { width: 1000, height: 1000 },
-    viewScale: 100,
-  }
+    settings: {
+      canvas: { width: 1000, height: 1000 },
+      viewScale: 100,
+    }
   }
 });
 
@@ -115,7 +115,11 @@ class App extends Component {
           }}>
             <div>
               <Group title='render options'>
-                <RenderOptions items={this.settings} onChange={(c) => { this.setState({settings: c})}}></RenderOptions>
+                <RenderOptions items={this.state.settings}
+                  onChange={(c) => {
+                    this.setState({ settings: c })
+                    settingsStore.set('settings', c)
+                  }}/>
               </Group>
               <Group title='students'>
                 <Students items={this.state.students}></Students>

@@ -13,6 +13,7 @@ export class RenderOptions extends Component {
         super()
 
         this._getErrorMessage = this._getErrorMessage.bind(this);
+
     }
 
     render() {
@@ -20,29 +21,48 @@ export class RenderOptions extends Component {
             background: '#eee',
             margin: '0px',
         }}>
-
+{this.props.items.canvas && 
             <div style={{ padding: '10px' }}>
                 <div className='flexColumns'>
                     <div style={{ flex: '1 0' }}>
                         <TextField label='width'
-                            value='1000'
-                            onGetErrorMessage={this._getErrorMessage}></TextField>
+                            value={this.props.items.canvas.width}
+                            onGetErrorMessage={this._getErrorMessage}
+                            onChange={(s,e) => this.props.onChange({
+                                canvas: {
+                                    width: e, height: this.props.items.canvas.height
+                                },
+                                viewScale: this.props.items.viewScale
+                            })}/>
                     </div>
                     <div style={{ flex: '1 0' }}>
                         <TextField label='height'
-                            value='1200'
-                            onGetErrorMessage={this._getErrorMessage}></TextField>
+                            value={this.props.items.canvas.height}
+                            onGetErrorMessage={this._getErrorMessage}
+                            onChange={(s,e) => this.props.onChange({
+                                canvas: {
+                                    width: this.props.items.canvas.width, height: e
+                                },
+                                viewScale: this.props.items.viewScale
+                            })}/>
                     </div>
                 </div>
                 <Slider
                     label="Scale"
                     max={100}
-                    value={100}
+                    value={this.props.items.viewScale}
                     showValue={true}
+                    onChange={(e) => this.props.onChange({
+                        canvas: {
+                            width: this.props.items.canvas.width, height: this.props.items.canvas.height
+                        },
+                        viewScale: e
+                    })}
                 />
             </div>
-
-        </div>
+}
+        </div >
+                
     }
 
     _getErrorMessage(value) {
