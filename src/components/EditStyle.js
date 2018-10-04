@@ -21,20 +21,23 @@ export class EditStyle extends Component {
 
     render() {
         return <div style={{ margin: '0px', height: '80vh', position: 'relative' }}>
-            <div style={{ width: '40%', height: '100%' }}>
+            <div style={{ width: '40%', height: 'calc(100vh - 200px)' }}>
                 <TextField placeholder="A name to reconize the style"
                     onGetErrorMessage={this._getErrorMessage}
                     label="Name"
                     required={true}></TextField>
-                    <Editor style={{height: '500px'}}
-                        value={{name: "hello"}}
-                        />
+                    <div style={{height: '1000px'}}>
+                    <Editor value={{name: "hello"}} 
+                    mode='tree'
+                    allowedModes= {['tree', 'code']}
+                    htmlElementProps={{style: {height: '500px'}}}/>
+                    </div>
                 
             </div>
             <div style={{ background: 'blue' }}>
 
             </div>
-            <div style={{ button: '100%', height: '50px' }}>
+            <div style={{ button: '100%' }}>
                 <PrimaryButton>Save</PrimaryButton>
                 <Button>Cancel</Button>
             </div>

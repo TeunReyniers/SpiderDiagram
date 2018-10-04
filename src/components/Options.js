@@ -65,6 +65,7 @@ export class Options extends Component {
           onClick={() => this.setState({ StyleEditOpen: true })} />
       </div>
       <Panel
+        hasCloseButton={false}
         isOpen={this.state.StyleEditOpen}
         type={PanelType.smallFluid}
         // tslint:disable-next-line:jsx-no-lambda
