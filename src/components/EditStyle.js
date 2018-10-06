@@ -17,8 +17,8 @@ export class EditStyle extends Component {
 
         this.state = {
             calloutVisible: false,
-            name: "",
-            style: {
+            name: '' ,
+            style:             {
                 ratio: 1.2,
                 fillmode: 'piece',
                 title: {
@@ -116,7 +116,7 @@ export class EditStyle extends Component {
                         }
                     }
                 }
-            },
+            } ,
 
         }
 
@@ -126,6 +126,14 @@ export class EditStyle extends Component {
 
     }
 
+    componentDidMount(){
+        if(this.props.new){
+            this.setState({name: this.props.style.name})
+            this.setState({style: this.props.style.style})
+            console.log(this.props)
+        }
+    }
+  
 
     render() {
         return <div className='flexColumns' style={{ margin: '0px', position: 'relative' }}>

@@ -12,11 +12,14 @@ export class Options extends Component {
   constructor() {
     super();
     this.state = {
-      StyleEditOpen: false,
+      styleEditOpen: false,
+      new: false,
+      selectedStyle: ''
     };
 
   }
 
+  
   render() {
     return <div className="flexColumns"
       style={{
@@ -27,22 +30,30 @@ export class Options extends Component {
       <div className="flexColumns">
         <Label>Style</Label>
         <ComboBox
-          defaultSelectedKey={1}
+          defaultSelectedKey={'h'}
           id="TypeDropDown"
           ariaLabel="Type combobox"
           allowFreeform={true}
           autoComplete="on"
-          options={this.props.items.styles.map((e) => { return { key: e.key, text: e.name } })}
+          options={this.props.items.styles.map((e) => { return { key: e.name, text: e.name } })}
           onRenderOption={this._onRenderFontOption}
           componentRef={this._basicComboBoxComponentRef}
-          onPendingValueChanged={(option, pendingIndex, pendingValue) => { }} />
+          onPendingValueChanged={(option,g,h) => { 
+            option && this.setState({selectedStyle: option.text})}} />
         <IconButton
           iconProps={{ iconName: 'Edit' }}
           title="Edit"
-          ariaLabel="Edit" />
+          ariaLabel="Edit"
+          onClick={() => {
+            this.setState({ styleEditOpen: true })
+            this.setState({ New: false })
+          }}/>
         <IconButton
           iconProps={{ iconName: 'Add' }}
-          onClick={() => this.setState({ StyleEditOpen: true })} />
+          onClick={() => {
+            this.setState({ styleEditOpen: true })
+            this.setState({ New: true })
+          }}/>
       </div>
       <div className="flexColumns">
         <Label>Type</Label>
@@ -62,17 +73,27 @@ export class Options extends Component {
           ariaLabel="Edit" />
         <IconButton
           iconProps={{ iconName: 'Add' }}
-          onClick={() => this.setState({ StyleEditOpen: true })} />
+          onClick={() => this.setState({ styleEditOpen: true })} />
       </div>
       <Panel
         hasCloseButton={false}
-        isOpen={this.state.StyleEditOpen}
+        isOpen={this.state.styleEditOpen}
         type={PanelType.smallFluid}
-        // tslint:disable-next-line:jsx-no-lambda
-        onDismiss={() => this.setState({ StyleEditOpen: false })}
+        onDismiss={() => this.setState({ styleEditOpen: false })}
         headerText="Edit Style">
-        <EditStyle onCancel={() => {this.setState({StyleEditOpen: false})}}
-                  onSave={(name, style) => {this.setState({StyleEditOpen: false})}}></EditStyle>
+        <EditStyle new={this.state.new} style={this.props.items.styles.filter(s=> s.name == this.state.selectedStyle)[0]}
+        onCancel={() => { this.setState({ styleEditOpen: false }) }}
+          onSave={(name, style) => {
+            this.setState({ styleEditOpen: false })
+            if (this.props.items.styles.some(s => s.name == name)) {
+              this.props.onChange('StyleEdited', { name: name, style: style })
+            } else {
+              
+              this.props.onChange('StyleAdded', { name: name, style: style })
+            
+            }
+
+          }}></EditStyle>
       </Panel>
     </div>
   }

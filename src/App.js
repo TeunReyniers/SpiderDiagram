@@ -36,7 +36,7 @@ const styleStore = new Store({
   configName: 'styleStore',
   defaults: {
     defaultStyleKey: 'defaultStyle',
-    styles: [{ key: 1, name: 'wiskunde' },]
+    styles: [{ key: 'wiskunde', name: 'wiskunde' },]
   }
 });
 
@@ -98,7 +98,21 @@ class App extends Component {
     return (
       <div className="App FullScreen flexRows">
         <div>
-          <Options items={this.state}></Options>
+          <Options items={this.state} onChange={(c, e) => {
+            if (c == 'StyleAdded') {
+            
+              let array = this.state.styles.map(s=>s)
+              array.push(e)
+              this.setState({styles: array})
+              styleStore.set('styles', array)
+            }else if (c== 'StyleEdited'){
+              let array = this.state.styles.filter(s=>s.name != e.name)
+              array.push(e)
+              this.setState({styles: array})
+              styleStore.set('styles', array)
+            }
+          }
+          }></Options>
         </div>
         <div className='flexColumns' style={{
           flex: 1,
@@ -119,7 +133,7 @@ class App extends Component {
                   onChange={(c) => {
                     this.setState({ settings: c })
                     settingsStore.set('settings', c)
-                  }}/>
+                  }} />
               </Group>
               <Group title='students'>
                 <Students items={this.state.students}></Students>
