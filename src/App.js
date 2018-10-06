@@ -98,7 +98,7 @@ class App extends Component {
     return (
       <div className="App FullScreen flexRows">
         <div>
-          <Options items={this.state} ></Options>
+          <Options items={this.state}></Options>
         </div>
         <div className='flexColumns' style={{
           flex: 1,

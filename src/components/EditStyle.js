@@ -5,8 +5,10 @@ import { TextField } from 'office-ui-fabric-react/lib/TextField'
 import { PrimaryButton, Button } from 'office-ui-fabric-react/lib/Button';
 
 import { JsonEditor as Editor } from 'jsoneditor-react';
-import {RenderCanvas}  from '../logic/RenderSpinDiagramCanvas.js';
+import { RenderCanvas } from '../logic/RenderSpinDiagramCanvas.js';
 import 'jsoneditor-react/es/editor.min.css';
+import ReactResizeDetector from 'react-resize-detector';
+import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 
 
 export class EditStyle extends Component {
@@ -14,7 +16,10 @@ export class EditStyle extends Component {
         super()
 
         this.state = {
+            calloutVisible: false,
+            name: "",
             style: {
+                ratio: 1.2,
                 fillmode: 'piece',
                 title: {
                     font: {
@@ -85,7 +90,7 @@ export class EditStyle extends Component {
                             font: {
                                 type: 'Arial',
                                 size: 4.5,
-                                style: '',    
+                                style: '',
                             },
                             color: 'black',
                             radius: 9.4,
@@ -100,7 +105,7 @@ export class EditStyle extends Component {
                                 type: 'Arial',
                                 size: 3,
                                 style: 'bold',
-        
+
                             },
                             color: 'black',
                             offset: {
@@ -112,11 +117,15 @@ export class EditStyle extends Component {
                     }
                 }
             },
+
         }
 
         this._getErrorMessage = this._getErrorMessage.bind(this);
         this._jsonChanged = this._jsonChanged.bind(this);
+        this._renderCanvas = this._renderCanvas.bind(this);
+
     }
+
 
     render() {
         return <div className='flexColumns' style={{ margin: '0px', position: 'relative' }}>
@@ -124,23 +133,31 @@ export class EditStyle extends Component {
                 <TextField placeholder="A name to reconize the style"
                     onGetErrorMessage={this._getErrorMessage}
                     label="Name"
-                    required={true}></TextField>
+                    required={true}
+                    text={this.state.name}
+                    onChange={(e, v) => this.setState({ name: v })}></TextField>
                 <div style={{ height: 'calc(100% - 100px)' }}>
                     <Editor value={this.state.style}
                         mode='form'
                         allowedModes={['code', 'form']}
-                        htmlElementProps={{ style: { height: '100%' } }} 
-                        onChange={this._jsonChanged}/>
+                        htmlElementProps={{ style: { height: '100%' } }}
+                        onChange={this._jsonChanged} />
                 </div>
                 <div>
-                    <PrimaryButton>Save</PrimaryButton>
-                    <Button>Cancel</Button>
+                    <PrimaryButton onClick={() => {
+                        if (this._getErrorMessage(this.state.name) == "") {
+                            this.props.onSave(this.state.name, this.state.style)
+                        } 
+                        console.log(this.state.name);
+                        
+                    }}>Save</PrimaryButton>
+                    <Button onClick={() => { this.props.onCancel() }}>Cancel</Button>
                 </div>
             </div>
-            <div style={{ height: '100', width: '60%' }}>
-                <canvas id='StyleCanvas'></canvas>
+            <div id="StyleCanvasWrapper" style={{ width: '60%', overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
+                <canvas id='StyleCanvas' style={{ background: 'white', alignSelf: 'center', border: '1px solid #333' }}></canvas>
             </div>
-
+            <ReactResizeDetector handleWidth handleHeight onResize={this._renderCanvas} />
         </div>
     }
 
@@ -157,9 +174,12 @@ export class EditStyle extends Component {
         return ''
     }
 
-    _jsonChanged(value){
-        this.setState({style: value})
+    _jsonChanged(value) {
+        this.setState({ style: value })
+        this._renderCanvas()
+    }
 
+    _renderCanvas() {
         const layout = {
             title: "Wiskunde - getallenleer",
             sectors: [
@@ -194,7 +214,10 @@ export class EditStyle extends Component {
                 { name: "Goed", width: 9, color: '#a8dba8' },
                 { name: "Stoppen met werken", width: 10, color: '#cff09e' },
             ]
-        }
-        RenderCanvas.drawCanvas.bind(this)({format: this.style.format, layout: layout}, 'StyleCanvas', { name: "Teun Reyniers", scores: [0, 1, 3, 2, 2, 2, 1, 0, 2, 0, 3] });
+        };
+
+        const wrapper = document.getElementById('StyleCanvasWrapper')
+        RenderCanvas.drawCanvas({ format: this.state.style, layout: layout }, 'StyleCanvas', { name: "Teun Reyniers", scores: [0, 1, 3, 2, 2, 2, 1, 0, 2, 0, 3] }, Math.min(wrapper.offsetWidth * 0.9, wrapper.offsetHeight * 0.9 / this.state.style.ratio));
     }
+
 }

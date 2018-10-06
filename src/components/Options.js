@@ -71,7 +71,8 @@ export class Options extends Component {
         // tslint:disable-next-line:jsx-no-lambda
         onDismiss={() => this.setState({ StyleEditOpen: false })}
         headerText="Edit Style">
-        <EditStyle></EditStyle>
+        <EditStyle onCancel={() => {this.setState({StyleEditOpen: false})}}
+                  onSave={(name, style) => {this.setState({StyleEditOpen: false})}}></EditStyle>
       </Panel>
     </div>
   }

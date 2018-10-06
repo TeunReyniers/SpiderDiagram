@@ -1,17 +1,18 @@
-export const RenderCanvas = {
-    formatText: function (text) {
+export class RenderCanvas  {
+
+    static formatText (text) {
         if (text.substr(0, 1) == '"') {
             return text.substr(1, text.length)
         }
         return text
-    },
+    }
 
-    drawCanvas: function(data, canvasId, student) {
-
+    static drawCanvas(data, canvasId, student, width) {
+       
         console.log('render canvas');
         
 
-        const scale = data.format.canvas_size.width / 200;
+        const scale = width/200;
         const lineScale = scale / 3
         const center = data.format.diagram.position && this.ScalePoint(scale, data.format.diagram.position) || { X: data.format.canvas_size.width / 2, Y: data.format.canvas_size.height / 2 }
         const partCount = data.layout.sectors.reduce((c, s) => c + s.parts.length, 0)
@@ -20,8 +21,8 @@ export const RenderCanvas = {
         let canvas = document.getElementById(canvasId);
 
 
-        canvas.setAttribute('width', data.format.canvas_size.width);
-        canvas.setAttribute('height', data.format.canvas_size.height);
+        canvas.setAttribute('width', width);
+        canvas.setAttribute('height', width*data.format.ratio);
         var ctx = canvas.getContext("2d");
 
         //Title
@@ -34,7 +35,7 @@ export const RenderCanvas = {
         //pie parts 
         let index = 0
         student.scores.forEach(score => {
-            if (data.options.colorfill == "piece") {
+            if (data.format.fillmode == "piece") {
                 const grade = data.layout.grades[score]
                 this.DrawPiePartPartArea(ctx, 0, grade.width * scale * diagram.radius / 10,
                     center, index * 360 / partCount, (index + 1) * 360 / partCount, grade.color)
@@ -146,9 +147,9 @@ export const RenderCanvas = {
 
             previousRadius = grade.width
         });
-    },
+    }
 
-    DrawLine: function (ctx, angle, length, start, color = 'black', width = 1) {
+    static DrawLine(ctx, angle, length, start, color = 'black', width = 1) {
         ctx.save()
         ctx.beginPath()
         ctx.strokeStyle = color
@@ -157,9 +158,9 @@ export const RenderCanvas = {
         ctx.lineTo(start.X + Math.cos(this.GetRadians(angle)) * length, start.Y + Math.sin(this.GetRadians(angle)) * length)
         ctx.stroke()
         ctx.restore()
-    },
+    }
 
-    DrawCircle: function (ctx, radius, center, color = 'black', width = 1) {
+    static DrawCircle(ctx, radius, center, color = 'black', width = 1) {
         ctx.save()
         ctx.beginPath()
         ctx.strokeStyle = color
@@ -167,9 +168,9 @@ export const RenderCanvas = {
         ctx.arc(center.X, center.Y, radius, 0, 2 * Math.PI)
         ctx.stroke()
         ctx.restore()
-    },
+    }
 
-    DrawText: function (ctx, text, position, fontStyle = '20px Arial', alignment = 'center', rotation = 0, color) {
+    static DrawText(ctx, text, position, fontStyle = '20px Arial', alignment = 'center', rotation = 0, color) {
         ctx.save()
         ctx.font = fontStyle
         ctx.textAlign = alignment
@@ -180,17 +181,17 @@ export const RenderCanvas = {
         ctx.translate(-position.X, -position.Y)
         ctx.fillText(text, position.X, position.Y)
         ctx.restore()
-    },
+    }
 
-    DrawTextSmart: function DrawTextSmart(ctx, text, textStyle, scale, color) {
+    static DrawTextSmart(ctx, text, textStyle, scale, color) {
         this.DrawText(ctx, text, this.ScalePoint(scale, textStyle.position), this.GetFontStyle(scale, textStyle.font || { type: 'Arial', size: 5, style: '' }), textStyle.alignment || 'center', textStyle.rotation || 0, color)
-    },
+    }
 
-    DrawTextSmart2: function (ctx, text, textStyle, scale, defaultPosition) {
+    static  DrawTextSmart2(ctx, text, textStyle, scale, defaultPosition) {
         this.DrawText(ctx, text, this.ScalePoint(scale, textStyle ? textStyle.position || defaultPosition : defaultPosition), this.GetFontStyle(scale, textStyle ? textStyle.font || { type: 'Arial', size: 5, style: '' } : { type: 'Arial', size: 5, style: '' }), textStyle ? textStyle.alignment || 'center' : 'center', textStyle ? textStyle.rotation || 0 : 0)
-    },
+    }
 
-    DrawTextOnArc: function (ctx, radius, center, middleAngle, text, textstyle, scale, flip) {
+    static DrawTextOnArc(ctx, radius, center, middleAngle, text, textstyle, scale, flip) {
         ctx.save()
         ctx.font = this.GetFontStyle(scale, textstyle.font)
         ctx.textAlign = textstyle.alignment
@@ -221,9 +222,9 @@ export const RenderCanvas = {
             ctx.translate(-center.X, -center.Y)
         })
         ctx.restore()
-    },
+    }
 
-    DrawPiePartArea: function (ctx, radius, center, startAngle = 0, endAngle = 2 * Math.PI, color = '#999') {
+    static DrawPiePartArea(ctx, radius, center, startAngle = 0, endAngle = 2 * Math.PI, color = '#999') {
         ctx.save()
         ctx.beginPath()
         ctx.lineWidth = 0
@@ -235,9 +236,9 @@ export const RenderCanvas = {
         ctx.lineTo(center.X, center.Y)
         ctx.fill()
         ctx.restore()
-    },
+    }
 
-    DrawPiePartPartArea: function (ctx, innerRadius, outerRadius, center, startAngle, endAngle, color = "#999") {
+    static DrawPiePartPartArea(ctx, innerRadius, outerRadius, center, startAngle, endAngle, color = "#999") {
         ctx.save()
         ctx.beginPath()
         ctx.lineWidth = 0
@@ -246,24 +247,24 @@ export const RenderCanvas = {
         ctx.arc(center.X, center.Y, outerRadius, this.GetRadians(endAngle), this.GetRadians(startAngle), true)
         ctx.fill()
         ctx.restore()
-    },
+    }
 
-    GetRadians: function (degrees) {
+    static GetRadians(degrees) {
         return degrees / 180 * Math.PI - Math.PI / 2
-    },
+    }
 
-    GetFontStyle: function (scale, font) {
+    static GetFontStyle(scale, font) {
         return font.style + ' ' + font.size * scale + 'px ' + font.type
-    },
+    }
 
-    ScalePoint: function (scale, point) {
+    static ScalePoint(scale, point) {
         return {
             X: point.X * scale,
             Y: point.Y * scale
         }
-    },
+    }
 
-    GetSmartRotateAngle: function (text, position, center, angle, invert) {
+    static GetSmartRotateAngle(text, position, center, angle, invert) {
         const offset = { X: position.X - center.X, Y: position.Y - center.Y }
 
         if (!text.smartRotate) return angle + text.rotation
@@ -275,9 +276,9 @@ export const RenderCanvas = {
         }
         return angle + text.rotation + (invert ? 180 : 0)
 
-    },
+    }
 
-    GetSmartRotateFlipSingle: function (text, position, center) {
+    static GetSmartRotateFlipSingle(text, position, center) {
         const offset = { X: position.X - center.X, Y: position.Y - center.Y }
 
         if (!text.smartRotate) return false
@@ -289,9 +290,9 @@ export const RenderCanvas = {
         }
         return false
 
-    },
+    }
 
-    GetSmartRotateFlip: function (text, position, center, invert) {
+    static GetSmartRotateFlip(text, position, center, invert) {
         if (!text.smartRotate) return false
         return invert ? !this.GetSmartRotateFlipSingle(text, position, center) : this.GetSmartRotateFlipSingle(text, position, center)
     }
