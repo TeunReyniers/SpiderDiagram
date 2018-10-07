@@ -36,7 +36,109 @@ const styleStore = new Store({
   configName: 'styleStore',
   defaults: {
     defaultStyleKey: 'defaultStyle',
-    styles: [{ key: 'wiskunde', name: 'wiskunde' },]
+    styles: [{
+      key: 0,
+      name: 'Default',
+      style: {
+        ratio: 1.2,
+        fillmode: 'piece',
+        title: {
+          font: {
+            type: 'Arial',
+            size: 7,
+            style: 'bold',
+          },
+          color: 'black',
+          position: {
+            X: 100,
+            Y: 14
+          },
+          rotation: 0,
+          alignment: 'center'
+        },
+        student: {
+          font: {
+            type: 'Arial',
+            size: 5,
+            style: '',
+          },
+          color: 'black',
+          position: {
+            X: 100,
+            Y: 20
+          },
+          rotation: 0,
+          alignment: 'center'
+        },
+        diagram: {
+          position: {
+            X: 100,
+            Y: 120,
+          },
+          radius: 80,
+          lines: {
+            sector: {
+              color: '#1f4e5f',
+              width: 2,
+              length: 10.5
+            },
+            part: {
+              color: '#aacfd0',
+              width: 1,
+              length: 10
+            },
+            circles: {
+              color: '#aacfd0',
+              width: 1,
+            }
+          },
+          text: {
+            sector: {
+              font: {
+                type: 'Arial',
+                size: 7,
+                style: 'bold',
+              },
+              color: 'black',
+              radius: 11,
+              rotation: 0,
+              smartRotate: false,
+              smartRotateDirection: 'horizontal', // or horizontal
+              smartRotateInvert: false,
+              bow: true,
+            },
+            part: {
+              font: {
+                type: 'Arial',
+                size: 4.5,
+                style: '',
+              },
+              color: 'black',
+              radius: 9.4,
+              rotation: 0,
+              smartRotate: false,
+              smartRotateDirection: 'horizontal', // or horizontal
+              smartRotateInvert: false,
+              bow: true,
+            },
+            circles: {
+              font: {
+                type: 'Arial',
+                size: 3,
+                style: 'bold',
+
+              },
+              color: 'black',
+              offset: {
+                X: -3, Y: -3
+              },
+              rotation: -90,
+              alignment: 'left'
+            }
+          }
+        }
+      },
+    },]
   }
 });
 
@@ -100,15 +202,15 @@ class App extends Component {
         <div>
           <Options items={this.state} onChange={(c, e) => {
             if (c == 'StyleAdded') {
-            
-              let array = this.state.styles.map(s=>s)
-              array.push(e)
-              this.setState({styles: array})
+
+              let array = this.state.styles.map(s => s)
+              array.push({key:  Math.max(...this.state.styles.map(s=>s.key)) + 1 ,name: e.name, style: e.style})
+              this.setState({ styles: array })
               styleStore.set('styles', array)
-            }else if (c== 'StyleEdited'){
-              let array = this.state.styles.filter(s=>s.name != e.name)
+            } else if (c == 'StyleEdited') {
+              let array = this.state.styles.filter(s => s.key != e.key)
               array.push(e)
-              this.setState({styles: array})
+              this.setState({ styles: array })
               styleStore.set('styles', array)
             }
           }

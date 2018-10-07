@@ -17,8 +17,9 @@ export class EditStyle extends Component {
 
         this.state = {
             calloutVisible: false,
-            name: '' ,
-            style:             {
+            key: -1,
+            name: '',
+            style: {
                 ratio: 1.2,
                 fillmode: 'piece',
                 title: {
@@ -116,7 +117,7 @@ export class EditStyle extends Component {
                         }
                     }
                 }
-            } ,
+            },
 
         }
 
@@ -126,46 +127,64 @@ export class EditStyle extends Component {
 
     }
 
-    componentDidMount(){
-        if(this.props.new){
-            this.setState({name: this.props.style.name})
-            this.setState({style: this.props.style.style})
-            console.log(this.props)
+    componentDidMount() {
+
+        
+        console.log('Componend mounted')
+        console.log(this.props)
+        if (!this.props.new) {
+            console.log('set new props');
+
+
+            if (this.props.style.style !== undefined) {
+                this.setState({
+                    style: this.props.style.style,
+                    name: this.props.style.name,
+                    key: this.props.style.key
+                })
+                console.log('mine');
+
+            }
         }
     }
-  
+
 
     render() {
-        return <div className='flexColumns' style={{ margin: '0px', position: 'relative' }}>
-            <div style={{ width: '40%', height: 'calc(100vh - 180px)' }}>
-                <TextField placeholder="A name to reconize the style"
-                    onGetErrorMessage={this._getErrorMessage}
-                    label="Name"
-                    required={true}
-                    text={this.state.name}
-                    onChange={(e, v) => this.setState({ name: v })}></TextField>
-                <div style={{ height: 'calc(100% - 100px)' }}>
-                    <Editor value={this.state.style}
-                        mode='form'
-                        allowedModes={['code', 'form']}
-                        htmlElementProps={{ style: { height: '100%' } }}
-                        onChange={this._jsonChanged} />
+        return <div> {this.state &&
+            <div className='flexColumns' style={{ margin: '0px', position: 'relative' }}>
+
+                <div style={{ width: '40%', height: 'calc(100vh - 180px)' }}>
+                    <TextField placeholder="A name to reconize the style"
+                        onGetErrorMessage={this._getErrorMessage}
+                        label="Name"
+                        value={this.state.name}
+                        onChange={(e, v) => this.setState({ name: v })}
+                      ></TextField>
+                    <div style={{ height: 'calc(100% - 100px)' }}>
+                        <Editor value={this.state.style}
+                            mode='form'
+                            allowedModes={['code', 'form']}
+                            htmlElementProps={{ style: { height: '100%' } }}
+                            onChange={this._jsonChanged} />
+                    </div>
+                    <div>
+                        <PrimaryButton onClick={() => {
+                            if (this._getErrorMessage(this.state.name) == "") {
+                                this.props.onSave(this.state.key, this.state.name, this.state.style)
+                            }
+                            console.log(this.state.name);
+
+                        }}>Save</PrimaryButton>
+                        <Button onClick={() => { this.props.onCancel() }}>Cancel</Button>
+                    </div>
                 </div>
-                <div>
-                    <PrimaryButton onClick={() => {
-                        if (this._getErrorMessage(this.state.name) == "") {
-                            this.props.onSave(this.state.name, this.state.style)
-                        } 
-                        console.log(this.state.name);
-                        
-                    }}>Save</PrimaryButton>
-                    <Button onClick={() => { this.props.onCancel() }}>Cancel</Button>
+                <div id="StyleCanvasWrapper" style={{ width: '60%', overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
+                    <canvas id='StyleCanvas' style={{ background: 'white', alignSelf: 'center', border: '1px solid #333' }}></canvas>
                 </div>
-            </div>
-            <div id="StyleCanvasWrapper" style={{ width: '60%', overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
-                <canvas id='StyleCanvas' style={{ background: 'white', alignSelf: 'center', border: '1px solid #333' }}></canvas>
-            </div>
-            <ReactResizeDetector handleWidth handleHeight onResize={this._renderCanvas} />
+
+                <ReactResizeDetector handleWidth handleHeight onResize={this._renderCanvas} />
+
+            </div>}
         </div>
     }
 
