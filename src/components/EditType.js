@@ -1,23 +1,20 @@
-import React, { Component } from 'react';
-
+import React, { Component } from 'react'
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
-
-import { PrimaryButton, Button } from 'office-ui-fabric-react/lib/Button';
-
-import { JsonEditor as Editor } from 'jsoneditor-react';
-import { RenderCanvas } from '../logic/RenderSpinDiagramCanvas.js';
-import 'jsoneditor-react/es/editor.min.css';
-import ReactResizeDetector from 'react-resize-detector';
-import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
+import { PrimaryButton, Button } from 'office-ui-fabric-react/lib/Button'
+import { JsonEditor as Editor } from 'jsoneditor-react'
+import { RenderCanvas } from '../logic/RenderSpinDiagramCanvas.js'
+import 'jsoneditor-react/es/editor.min.css'
+import ReactResizeDetector from 'react-resize-detector'
+import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 
 
 export class EditType extends Component {
     constructor() {
         super()
 
-        this._getErrorMessage = this._getErrorMessage.bind(this);
-        this._jsonChanged = this._jsonChanged.bind(this);
-        this._renderCanvas = this._renderCanvas.bind(this);
+        this._getErrorMessage = this._getErrorMessage.bind(this)
+        this._jsonChanged = this._jsonChanged.bind(this)
+        this._renderCanvas = this._renderCanvas.bind(this)
 
     }
 
@@ -98,7 +95,7 @@ export class EditType extends Component {
                             if (this._getErrorMessage(this.state.name) == "") {
                                 this.props.onSave(this.state.key, this.state.name, this.state.type)
                             }
-                            console.log(this.state.name);
+                            console.log(this.state.name)
 
                         }}>Save</PrimaryButton>
                         <Button onClick={() => { this.props.onCancel() }}>Cancel</Button>
@@ -231,10 +228,10 @@ export class EditType extends Component {
                     }
                 }
             }
-        };
+        }
 
         const wrapper = document.getElementById('TypeCanvasWrapper')
-        RenderCanvas.drawCanvas({ format: style, layout: this.state.type }, 'TypeCanvas', { name: "Teun Reyniers", scores: [0, 1, 3, 2, 2, 2, 1, 0, 2, 0, 3] }, Math.min(wrapper.offsetWidth * 0.9, wrapper.offsetHeight * 0.9 / style.ratio));
+        RenderCanvas.drawCanvas({ format: style, layout: this.state.type }, 'TypeCanvas', { name: "Teun Reyniers", scores: [0, 1, 3, 2, 2, 2, 1, 0, 2, 0, 3] }, Math.min(wrapper.offsetWidth * 0.9, wrapper.offsetHeight * 0.9 / style.ratio))
     }
 
 }

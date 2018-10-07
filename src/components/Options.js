@@ -1,27 +1,25 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-import { PrimaryButton, Button, IconButton } from 'office-ui-fabric-react/lib/Button';
+import { PrimaryButton, Button, IconButton } from 'office-ui-fabric-react/lib/Button'
 import { Label } from 'office-ui-fabric-react/lib/Label'
-import { ComboBox } from 'office-ui-fabric-react/lib/ComboBox';
-import { Icon } from 'office-ui-fabric-react/lib/Icon';
-import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
+import { ComboBox } from 'office-ui-fabric-react/lib/ComboBox'
+import { Icon } from 'office-ui-fabric-react/lib/Icon'
+import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel'
 import { EditStyle } from './EditStyle'
 import { EditType } from './EditType'
 
 export class Options extends Component {
 
   constructor() {
-    super();
+    super()
     this.state = {
       styleEditOpen: false,
       typeEditOpen: false,
       new: false,
       selectedStyle: 0,
       selectedType: 0,
-    };
-
+    }
   }
-
 
   render() {
     return <div className="flexColumns"
@@ -42,9 +40,9 @@ export class Options extends Component {
           options={this.props.items.styles.map((e) => { return { key: e.key, text: e.name } })}
           onRenderOption={this._onRenderFontOption}
           componentRef={this._basicComboBoxComponentRef}
-          onChange={(e, option) => {
-            
+          onChange={(e, option) => {            
             this.setState({ selectedStyle: option.key })
+            this.props.onSelectionChange( option.key, this.state.selectedType)
           }} />
         <IconButton
           iconProps={{ iconName: 'Edit' }}
@@ -74,8 +72,8 @@ export class Options extends Component {
           onRenderOption={this._onRenderFontOption}
           componentRef={this._basicComboBoxComponentRef}
           onChange={(e, option) => {
-            
             this.setState({ selectedType: option.key })
+            this.props.onSelectionChanged(this.state.selectedStyle, option.key)
           }} />
         <IconButton
           iconProps={{ iconName: 'Edit' }}
@@ -130,8 +128,8 @@ export class Options extends Component {
   }
 
   _basicComboBoxComponentRef = (component) => {
-    this._basicCombobox = component;
-  };
+    this._basicCombobox = component
+  }
 
   _onRenderFontOption = (item) => {
     return (
@@ -141,6 +139,6 @@ export class Options extends Component {
         </span>
 
       </div>
-    );
-  };
+    )
+  }
 }

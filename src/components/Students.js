@@ -29,7 +29,7 @@ export class Students extends Component {
             <div style={{ padding: '0px' }}>
 
                 <DefaultButton onClick={this._showDialog}>Add</DefaultButton>
-                <DefaultButton>Clear</DefaultButton>
+                <DefaultButton onClick={() => this.props.onChange('Clear', '')}>Clear</DefaultButton>
                 <PrimaryButton>Download</PrimaryButton>
                 <List items={this.props.items} onRenderCell={this.renderCheckboxCell} />
             </div>
@@ -50,13 +50,26 @@ export class Students extends Component {
                 }}>
                 <TextField multiline
                     rows={5}
-                    required={true}></TextField>
+                    required={true} 
+                    value={this.state.NewStudents}
+                    onChange={(e,v)=> this.setState({NewStudents: this._formatText(v)})}></TextField>
                 <DialogFooter>
-                    <PrimaryButton onClick={this._closeDialog} text="Insert" />
+                    <PrimaryButton onClick={() => {
+                        this.props.onChange('Add', this.state.NewStudents)
+                        this.setState({NewStudents: ''})
+                        this._closeDialog()
+                    }} text="Insert" />
                     <DefaultButton onClick={this._closeDialog} text="Cancel" />
                 </DialogFooter>
             </Dialog>
         </div>
+    }
+
+    _formatText (text) {
+        if (text.substr(0, 1) == '"') {
+            return text.substr(1, text.length)
+        }
+        return text
     }
 
     renderCheckboxCell(item, index) {

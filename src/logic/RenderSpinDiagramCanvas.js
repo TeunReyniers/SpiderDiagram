@@ -27,9 +27,6 @@ export class RenderCanvas  {
 
         //Title
         this.DrawTextSmart(ctx, data.layout.title, data.format.title, scale, data.format.title.color)
-
-    
-
         this.DrawTextSmart(ctx, student.name, data.format.student, scale, data.format.student.color)
 
         //pie parts 

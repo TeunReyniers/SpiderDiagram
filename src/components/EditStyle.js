@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
-import { PrimaryButton, Button } from 'office-ui-fabric-react/lib/Button';
-import { JsonEditor as Editor } from 'jsoneditor-react';
-import { RenderCanvas } from '../logic/RenderSpinDiagramCanvas.js';
-import 'jsoneditor-react/es/editor.min.css';
-import ReactResizeDetector from 'react-resize-detector';
-import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
+import { PrimaryButton, Button } from 'office-ui-fabric-react/lib/Button'
+import { JsonEditor as Editor } from 'jsoneditor-react'
+import { RenderCanvas } from '../logic/RenderSpinDiagramCanvas.js'
+import 'jsoneditor-react/es/editor.min.css'
+import ReactResizeDetector from 'react-resize-detector'
+import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 
 
 export class EditStyle extends Component {
     constructor() {
         super()
 
-        this._getErrorMessage = this._getErrorMessage.bind(this);
-        this._jsonChanged = this._jsonChanged.bind(this);
-        this._renderCanvas = this._renderCanvas.bind(this);
+        this._getErrorMessage = this._getErrorMessage.bind(this)
+        this._jsonChanged = this._jsonChanged.bind(this)
+        this._renderCanvas = this._renderCanvas.bind(this)
 
     }
 
@@ -160,7 +160,7 @@ export class EditStyle extends Component {
                             if (this._getErrorMessage(this.state.name) == "") {
                                 this.props.onSave(this.state.key, this.state.name, this.state.style)
                             }
-                            console.log(this.state.name);
+                            console.log(this.state.name)
 
                         }}>Save</PrimaryButton>
                         <Button onClick={() => { this.props.onCancel() }}>Cancel</Button>
@@ -229,10 +229,10 @@ export class EditStyle extends Component {
                 { name: "Goed", width: 9, color: '#a8dba8' },
                 { name: "Stoppen met werken", width: 10, color: '#cff09e' },
             ]
-        };
+        }
 
         const wrapper = document.getElementById('StyleCanvasWrapper')
-        RenderCanvas.drawCanvas({ format: this.state.style, layout: layout }, 'StyleCanvas', { name: "Teun Reyniers", scores: [0, 1, 3, 2, 2, 2, 1, 0, 2, 0, 3] }, Math.min(wrapper.offsetWidth * 0.9, wrapper.offsetHeight * 0.9 / this.state.style.ratio));
+        RenderCanvas.drawCanvas({ format: this.state.style, layout: layout }, 'StyleCanvas', { name: "Teun Reyniers", scores: [0, 1, 3, 2, 2, 2, 1, 0, 2, 0, 3] }, Math.min(wrapper.offsetWidth * 0.9, wrapper.offsetHeight * 0.9 / this.state.style.ratio))
     }
 
 }

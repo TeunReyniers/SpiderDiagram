@@ -20,15 +20,15 @@ export class RenderOptions extends Component {
             background: '#eee',
             margin: '0px',
         }}>
-            {this.props.items.canvas &&
+            {this.props.items.width !== undefined &&
                 <div style={{ padding: '10px' }}>
                     <div className='flexColumns'>
                         <div style={{ flex: '1' }}>
                             <TextField label='width'
-                                value={this.props.items.canvas.width}
+                                value={this.props.items.width}
                                 onGetErrorMessage={this._getErrorMessage}
                                 onChange={(s, e) => this.props.onChange({
-                                   width : e,
+                                    width: e,
                                     viewScale: this.props.items.viewScale
                                 })} />
                         </div>
@@ -39,9 +39,7 @@ export class RenderOptions extends Component {
                         value={this.props.items.viewScale}
                         showValue={true}
                         onChange={(e) => this.props.onChange({
-                            canvas: {
-                                width: this.props.items.canvas.width, 
-                            },
+                            width: this.props.items.width,
                             viewScale: e
                         })}
                     />
