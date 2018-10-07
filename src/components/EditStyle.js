@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
-
 import { PrimaryButton, Button } from 'office-ui-fabric-react/lib/Button';
-
 import { JsonEditor as Editor } from 'jsoneditor-react';
 import { RenderCanvas } from '../logic/RenderSpinDiagramCanvas.js';
 import 'jsoneditor-react/es/editor.min.css';
@@ -15,112 +12,6 @@ export class EditStyle extends Component {
     constructor() {
         super()
 
-        this.state = {
-            calloutVisible: false,
-            key: -1,
-            name: '',
-            style: {
-                ratio: 1.2,
-                fillmode: 'piece',
-                title: {
-                    font: {
-                        type: 'Arial',
-                        size: 7,
-                        style: 'bold',
-                    },
-                    color: 'black',
-                    position: {
-                        X: 100,
-                        Y: 14
-                    },
-                    rotation: 0,
-                    alignment: 'center'
-                },
-                student: {
-                    font: {
-                        type: 'Arial',
-                        size: 5,
-                        style: '',
-                    },
-                    color: 'black',
-                    position: {
-                        X: 100,
-                        Y: 20
-                    },
-                    rotation: 0,
-                    alignment: 'center'
-                },
-                diagram: {
-                    position: {
-                        X: 100,
-                        Y: 120,
-                    },
-                    radius: 80,
-                    lines: {
-                        sector: {
-                            color: '#1f4e5f',
-                            width: 2,
-                            length: 10.5
-                        },
-                        part: {
-                            color: '#aacfd0',
-                            width: 1,
-                            length: 10
-                        },
-                        circles: {
-                            color: '#aacfd0',
-                            width: 1,
-                        }
-                    },
-                    text: {
-                        sector: {
-                            font: {
-                                type: 'Arial',
-                                size: 7,
-                                style: 'bold',
-                            },
-                            color: 'black',
-                            radius: 11,
-                            rotation: 0,
-                            smartRotate: false,
-                            smartRotateDirection: 'horizontal', // or horizontal
-                            smartRotateInvert: false,
-                            bow: true,
-                        },
-                        part: {
-                            font: {
-                                type: 'Arial',
-                                size: 4.5,
-                                style: '',
-                            },
-                            color: 'black',
-                            radius: 9.4,
-                            rotation: 0,
-                            smartRotate: false,
-                            smartRotateDirection: 'horizontal', // or horizontal
-                            smartRotateInvert: false,
-                            bow: true,
-                        },
-                        circles: {
-                            font: {
-                                type: 'Arial',
-                                size: 3,
-                                style: 'bold',
-
-                            },
-                            color: 'black',
-                            offset: {
-                                X: -3, Y: -3
-                            },
-                            rotation: -90,
-                            alignment: 'left'
-                        }
-                    }
-                }
-            },
-
-        }
-
         this._getErrorMessage = this._getErrorMessage.bind(this);
         this._jsonChanged = this._jsonChanged.bind(this);
         this._renderCanvas = this._renderCanvas.bind(this);
@@ -128,23 +19,120 @@ export class EditStyle extends Component {
     }
 
     componentDidMount() {
-
-        
-        console.log('Componend mounted')
-        console.log(this.props)
         if (!this.props.new) {
-            console.log('set new props');
-
-
             if (this.props.style.style !== undefined) {
                 this.setState({
                     style: this.props.style.style,
                     name: this.props.style.name,
                     key: this.props.style.key
                 })
-                console.log('mine');
-
             }
+        }else{
+            this.setState({
+                calloutVisible: false,
+                key: -1,
+                name: '',
+                style: {
+                    ratio: 1.2,
+                    fillmode: 'piece',
+                    title: {
+                        font: {
+                            type: 'Arial',
+                            size: 7,
+                            style: 'bold',
+                        },
+                        color: 'black',
+                        position: {
+                            X: 100,
+                            Y: 14
+                        },
+                        rotation: 0,
+                        alignment: 'center'
+                    },
+                    student: {
+                        font: {
+                            type: 'Arial',
+                            size: 5,
+                            style: '',
+                        },
+                        color: 'black',
+                        position: {
+                            X: 100,
+                            Y: 20
+                        },
+                        rotation: 0,
+                        alignment: 'center'
+                    },
+                    diagram: {
+                        position: {
+                            X: 100,
+                            Y: 120,
+                        },
+                        radius: 80,
+                        lines: {
+                            sector: {
+                                color: '#1f4e5f',
+                                width: 2,
+                                length: 10.5
+                            },
+                            part: {
+                                color: '#aacfd0',
+                                width: 1,
+                                length: 10
+                            },
+                            circles: {
+                                color: '#aacfd0',
+                                width: 1,
+                            }
+                        },
+                        text: {
+                            sector: {
+                                font: {
+                                    type: 'Arial',
+                                    size: 7,
+                                    style: 'bold',
+                                },
+                                color: 'black',
+                                radius: 11,
+                                rotation: 0,
+                                smartRotate: false,
+                                smartRotateDirection: 'horizontal', // or horizontal
+                                smartRotateInvert: false,
+                                bow: true,
+                            },
+                            part: {
+                                font: {
+                                    type: 'Arial',
+                                    size: 4.5,
+                                    style: '',
+                                },
+                                color: 'black',
+                                radius: 9.4,
+                                rotation: 0,
+                                smartRotate: false,
+                                smartRotateDirection: 'horizontal', // or horizontal
+                                smartRotateInvert: false,
+                                bow: true,
+                            },
+                            circles: {
+                                font: {
+                                    type: 'Arial',
+                                    size: 3,
+                                    style: 'bold',
+    
+                                },
+                                color: 'black',
+                                offset: {
+                                    X: -3, Y: -3
+                                },
+                                rotation: -90,
+                                alignment: 'left'
+                            }
+                        }
+                    }
+                },
+    
+            })
         }
     }
 

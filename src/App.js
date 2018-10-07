@@ -35,7 +35,7 @@ const settingsStore = new Store({
 const styleStore = new Store({
   configName: 'styleStore',
   defaults: {
-    defaultStyleKey: 'defaultStyle',
+    defaultStyleKey: 0,
     styles: [{
       key: 0,
       name: 'Default',
@@ -145,9 +145,43 @@ const styleStore = new Store({
 const typeStore = new Store({
   configName: 'typeStore',
   defaults: {
-    defaultTypeKey: 'defaultTypeKey',
+    defaultTypeKey: 0,
     types: [
-      { name: 'gehele getallen', tag: 'wiskunde' },
+      { key: 0,  name: 'Default', type:  {
+        title: "Wiskunde - getallenleer",
+        sectors: [
+            {
+                name: "Gehelegetallen",
+                parts: [
+                    { name: "optellen" },
+                    { name: "aftrekken" },
+                    { name: "delen" },
+                    { name: "vermenigvuldigen" }
+                ]
+            },
+            {
+                name: "Breuken", parts: [
+                    { name: "optellen" },
+                    { name: "aftrekken" },
+                    { name: "delen" },
+                    { name: "vermenigvuldigen" }
+                ]
+            },
+            {
+                name: "Complex", parts: [
+                    { name: "optellen" },
+                    { name: "aftrekken" },
+                    { name: "vermenigvuldigen" },
+                ]
+            }
+        ],
+        grades: [
+            { name: "Onvoldoende", width: 3, color: '#3b8686' },
+            { name: "Voldoende", width: 6, color: '#79bd9a' },
+            { name: "Goed", width: 9, color: '#a8dba8' },
+            { name: "Stoppen met werken", width: 10, color: '#cff09e' },
+        ]
+    } },
     ],
   }
 });
@@ -202,7 +236,6 @@ class App extends Component {
         <div>
           <Options items={this.state} onChange={(c, e) => {
             if (c == 'StyleAdded') {
-
               let array = this.state.styles.map(s => s)
               array.push({key:  Math.max(...this.state.styles.map(s=>s.key)) + 1 ,name: e.name, style: e.style})
               this.setState({ styles: array })
@@ -212,6 +245,16 @@ class App extends Component {
               array.push(e)
               this.setState({ styles: array })
               styleStore.set('styles', array)
+            }else if (c == 'TypeAdded') {
+              let array = this.state.types.map(s => s)
+              array.push({key:  Math.max(...this.state.types.map(s=>s.key)) + 1 ,name: e.name, type: e.type})
+              this.setState({ types: array })
+              typeStore.set('types', array)
+            } else if (c == 'TypeEdited') {
+              let array = this.state.types.filter(s => s.key != e.key)
+              array.push(e)
+              this.setState({ types: array })
+              typeStore.set('types', array)
             }
           }
           }></Options>
