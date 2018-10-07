@@ -23,25 +23,12 @@ export class RenderOptions extends Component {
             {this.props.items.canvas &&
                 <div style={{ padding: '10px' }}>
                     <div className='flexColumns'>
-                        <div style={{ flex: '1 0' }}>
+                        <div style={{ flex: '1' }}>
                             <TextField label='width'
                                 value={this.props.items.canvas.width}
                                 onGetErrorMessage={this._getErrorMessage}
                                 onChange={(s, e) => this.props.onChange({
-                                    canvas: {
-                                        width: e, height: this.props.items.canvas.height
-                                    },
-                                    viewScale: this.props.items.viewScale
-                                })} />
-                        </div>
-                        <div style={{ flex: '1 0' }}>
-                            <TextField label='height'
-                                value={this.props.items.canvas.height}
-                                onGetErrorMessage={this._getErrorMessage}
-                                onChange={(s, e) => this.props.onChange({
-                                    canvas: {
-                                        width: this.props.items.canvas.width, height: e
-                                    },
+                                   width : e,
                                     viewScale: this.props.items.viewScale
                                 })} />
                         </div>
@@ -53,7 +40,7 @@ export class RenderOptions extends Component {
                         showValue={true}
                         onChange={(e) => this.props.onChange({
                             canvas: {
-                                width: this.props.items.canvas.width, height: this.props.items.canvas.height
+                                width: this.props.items.canvas.width, 
                             },
                             viewScale: e
                         })}
