@@ -8,9 +8,19 @@ import { Group } from './components/Group'
 import { RenderOptions } from './components/RenderOptions'
 import ReactResizeDetector from 'react-resize-detector'
 import { RenderCanvas } from './logic/RenderSpinDiagramCanvas.js'
+import { ComboBox } from 'office-ui-fabric-react/lib/ComboBox'
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button'
 
-const path = require('path')
+const electron = window.require('electron');
+var http = require('http');
+var fs = electron.remote.require('fs');
+var path = require('path');
 const Store = require('./logic/Store.js')
+var JSZip = require("jszip");
+
+var elerem = electron.remote;
+var dialog = elerem.dialog;
+var app = elerem.app;
 
 initializeIcons()
 
@@ -194,40 +204,23 @@ class App extends Component {
       students: [
         {
           name: "Teun Reyniers",
-          grades: [1, 2, 5, 3, 2, 1, 5]
+          text: "Teun Reyniers",
+          scores: [1, 2, 5, 4, 2, 1, 5],
+          key: 0
         }, {
           name: "Piet reyniers",
-          grades: [1, 2, 5, 3, 2, 1, 5]
-        }, {
-          name: "Kristel de boulle",
-          grades: [1, 2, 5, 3, 2, 1, 5]
-        }, {
-          name: "Teun Reyniers",
-          grades: [1, 2, 5, 3, 2, 1, 5]
-        }, {
-          name: "Piet reyniers",
-          grades: [1, 2, 5, 3, 2, 1, 5]
-        }, {
-          name: "Kristel de boulle",
-          grades: [1, 2, 5, 3, 2, 1, 5]
-        }, {
-          name: "Teun Reyniers",
-          grades: [1, 2, 5, 3, 2, 1, 5]
-        }, {
-          name: "Piet reyniers",
-          grades: [1, 2, 5, 3, 2, 1, 5]
-        }, {
-          name: "Kristel de boulle",
-          grades: [1, 2, 5, 3, 2, 1, 5]
+          text: "Piet reyniers",
+          scores: [2, 3, 5, 3, 2, 1, 5],
+          key: 1
         }
       ],
       styleKey: 0,
       typeKey: 0,
-    } 
+    }
 
     this._renderCanvas = this._renderCanvas.bind(this)
     this._addStudents = this._addStudents.bind(this)
-
+    this._downloadAll = this._downloadAll.bind(this)
   }
 
   render() {
@@ -256,11 +249,10 @@ class App extends Component {
               this.setState({ types: array })
               typeStore.set('types', array)
             }
-          }
-          }
-          onSelectionChange={(s, t) => {
+          }}
+            onSelectionChange={(s, t) => {
               this.setState({ styleKey: s, typeKey: t })
-              this._renderCanvas(undefined, {style: s, type: t})
+              this._renderCanvas(undefined, { style: s, type: t }, undefined)
             }}></Options>
         </div>
         <div className='flexColumns' style={{
@@ -286,61 +278,166 @@ class App extends Component {
                   }} />
               </Group>
               <Group title='students'>
-                <Students items={this.state.students} onChange={(c, l)=> {
-                  if(c === 'Clear'){
-                    this.setState({'students': []})
-                  }else if(c === 'Add'){
+                <Students items={this.state.students} onChange={(c, l) => {
+                  if (c === 'Clear') {
+                    this.setState({ 'students': [] })
+                  } else if (c === 'Add') {
                     this._addStudents(l)
                   }
-                }}></Students>
+                }} download={
+                  () => {
+                    this._myUrlSaveAs()
+                  }
+                }></Students>
               </Group>
             </div>
           </div>
-          <div  id='MainCanvasWrapper' className='flexColumns' style={{ width: '80%', justifyContent: 'center', overflow: 'auto' }}>
+          <div id='MainCanvasWrapper' className='flexColumns' style={{ width: '80%', justifyContent: 'center', overflow: 'auto', position: 'relative', margin: '20px 0px 0px 0px' }}>
+            <div className='flexColumns' style={{ position: 'absolute', top: 0 }}>
+              <DefaultButton onClick={
+                () => {
+                  const index = Math.max(0, this.state.students.findIndex(s => s.key === (this.state.selectedStudent ? this.state.selectedStudent.key : 0)) - 1)
+                  this.setState({ selectedStudent: this.state.students[index] })
+                  this._renderCanvas(undefined, undefined, this.state.students[index])
+                }
+              }>Previous</DefaultButton>
+              <ComboBox
+                defaultSelectedKey={this.state.students.length > 0 ? this.state.students[0].key : undefined}
+                selectedKey={this.state.selectedStudent && this.state.selectedStudent.key}
+                id="StudentDropDown"
+                ariaLabel="Student selector"
+                allowFreeform={false}
+                autoComplete="on"
+                options={this.state.students}
+                onRenderOption={this._onRenderFontOption}
+                componentRef={this._basicComboBoxComponentRef}
+                onChange={(e, option) => {
+                  this.setState({ selectedStudent: option })
+                  this._renderCanvas(undefined, undefined, option)
+                }} />
+              <DefaultButton onClick={
+                () => {
+                  const index = Math.min(this.state.students.length - 1, this.state.students.findIndex(s => s.key === (this.state.selectedStudent ? this.state.selectedStudent.key : 0)) + 1)
+                  this.setState({ selectedStudent: this.state.students[index] })
+                  this._renderCanvas(undefined, undefined, this.state.students[index])
+                }
+              }>Next</DefaultButton>
+            </div>
             <canvas id='MainCanvas' style={{ alignSelf: 'center', border: '1px solid #333' }}></canvas>
-            <ReactResizeDetector handleWidth handleHeight onResize={() => this._renderCanvas(undefined, undefined)} />
+            <ReactResizeDetector handleWidth handleHeight onResize={() => this._renderCanvas(undefined, undefined, undefined)} />
           </div>
         </div>
       </div >
     )
   }
 
-  _renderCanvas(c,b) {
+  _basicComboBoxComponentRef = (component) => {
+    this._basicCombobox = component
+  }
+
+  _renderCanvas(c, b, l) {
+    const students = l ? l : this.state.selectedStudent
     const viewScale = c ? c.viewScale : this.state.settings.viewScale
-    const width = c ? c.width :  this.state.settings.width
-    const style = this.state.styles.filter(s => s.key ===   (b ? b.style :this.state.styleKey))[0]
-    const type =  this.state.types.filter(s => s.key === (b ? b.type: this.state.typeKey))[0]
+    const width = c ? c.width : this.state.settings.width
+    const style = this.state.styles.filter(s => s.key === (b ? b.style : this.state.styleKey))[0]
+    const type = this.state.types.filter(s => s.key === (b ? b.type : this.state.typeKey))[0]
     const wrapper = document.getElementById('MainCanvasWrapper')
-    RenderCanvas.drawCanvas({
+    students && RenderCanvas.drawCanvas({
       format: style.style,
       layout: type.type
-    }, 'MainCanvas', { name: "Teun Reyniers", scores: [0, 1, 3, 2, 2, 2, 1, 0, 2, 0, 3] },
+    }, 'MainCanvas', students,
       viewScale < 5
-        ? Math.min(Math.min(wrapper.offsetWidth * 0.9, wrapper.offsetHeight * 0.9 / style.style.ratio),width)
+        ? Math.min(Math.min(wrapper.offsetWidth * 0.9, wrapper.offsetHeight * 0.9 / style.style.ratio), width)
         : viewScale * width / 100)
   }
 
-  _addStudents(ltext) {
-    
-    let students = []
-    ltext.split('\n').forEach(l => {
-        if (l != "") {
-            let student = { name: "", scores: [] }
-            let first = true
-            l.split(',').forEach(w => {
-                if (first) {
-                    student.name = w
-                } else {
-                    student.scores.push(parseInt(w))
-                }
-                first = false
-            })
-            students.push(student)
-        }
-    })
-    this.setState({ students: students})
+  _renderCanvasFinal(c, b, l) {
+    const students = l ? l : this.state.selectedStudent
+    const viewScale = c ? c.viewScale : this.state.settings.viewScale
+    const width = c ? c.width : this.state.settings.width
+    const style = this.state.styles.filter(s => s.key === (b ? b.style : this.state.styleKey))[0]
+    const type = this.state.types.filter(s => s.key === (b ? b.type : this.state.typeKey))[0]
+    const wrapper = document.getElementById('MainCanvasWrapper')
+    students && RenderCanvas.drawCanvas({
+      format: style.style,
+      layout: type.type
+    }, 'MainCanvas', students,  width)
   }
 
+  _addStudents(ltext) {
+    let index = this.state.students.length === 0 ? 0 : Math.max(this.state.students.map(s => s.key)) + 1
+    let students = []
+    ltext.split('\n').forEach(l => {
+      if (l != "") {
+        let student = { name: "", key: index, text: '', scores: [] }
+        index = index + 1
+        let first = true
+        l.split(',').forEach(w => {
+          if (first) {
+            student.name = w
+            student.text = w
+          } else {
+            student.scores.push(parseInt(w))
+          }
+          first = false
+        })
+        students.push(student)
+      }
+    })
+    this.setState({ students: students })
+  }
+
+  _onRenderFontOption = (item) => {
+    return (
+      <div>
+        <span className={'ms-ComboBox-optionText'}>
+          {item.name}
+        </span>
+
+      </div>
+    )
+  }
+
+  _myUrlSaveAs() {
+    // app.getPath("desktop")       // User's Desktop folder
+    // app.getPath("documents")     // User's "My Documents" folder
+    // app.getPath("downloads")     // User's Downloads folder
+  
+    var toLocalPath = path.resolve(app.getPath("desktop"), 'spindiagram.zip')
+    let userChosenPath = dialog.showSaveDialog({ defaultPath: toLocalPath })
+  
+    if (userChosenPath) {
+      this._downloadAll( userChosenPath)
+    }
+  }
+  
+  _download(dest, content) {
+    fs.writeFileSync(dest, new Buffer(content));
+  };
+  
+  _downloadAll(dest) {
+    var zip = new JSZip()
+    const index = this.state.selectedStudent ? this.state.selectedStudent.key : 0
+    for (let q = 0; q < this.state.students.length; q++) {
+
+      this._renderCanvasFinal(undefined,undefined, this.state.students[q])
+        const canvas = document.getElementById("MainCanvas");
+        const ctx = canvas.getContext("2d");
+  
+        var savable = new Image();
+        savable.src = canvas.toDataURL();
+        zip.file(this.state.students[q].name + ".png", savable.src.substr(savable.src.indexOf(',') + 1), { base64: true })
+    }
+  
+    zip.generateAsync({type: "uint8array"})
+        .then( (content) => {
+            this._download(dest, content)
+        });
+
+        this._renderCanvas(undefined, undefined,this.state.students[index])
+  }
 }
+
+
 
 export default App

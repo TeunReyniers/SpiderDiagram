@@ -17,6 +17,7 @@ export class Students extends Component {
         this.state = { hideDialog: true }
 
         this._getErrorMessage = this._getErrorMessage.bind(this);
+    
     }
 
     render() {
@@ -30,8 +31,8 @@ export class Students extends Component {
 
                 <DefaultButton onClick={this._showDialog}>Add</DefaultButton>
                 <DefaultButton onClick={() => this.props.onChange('Clear', '')}>Clear</DefaultButton>
-                <PrimaryButton>Download</PrimaryButton>
-                <List items={this.props.items} onRenderCell={this.renderCheckboxCell} />
+                <PrimaryButton onClick={()=>this.props.download()}>Download</PrimaryButton>
+                <List items={this.props.items} onRenderCell={this._renderCheckboxCell} />
             </div>
             <Dialog
                 hidden={this.state.hideDialog}
@@ -72,10 +73,10 @@ export class Students extends Component {
         return text
     }
 
-    renderCheckboxCell(item, index) {
-        return (
+    _renderCheckboxCell(item, index) {
+        return(
             <div style={{ padding: '10px', background: index % 2 === 0 ? '#ddd' : '#eee' }} >
-                <Checkbox label={item.name} />
+                <Checkbox label={item.name}/>
             </div>
         );
     }

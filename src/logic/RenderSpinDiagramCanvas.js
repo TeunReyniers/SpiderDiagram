@@ -33,7 +33,7 @@ export class RenderCanvas  {
         let index = 0
         student.scores.forEach(score => {
             if (data.format.fillmode == "piece") {
-                const grade = data.layout.grades[score]
+                const grade = data.layout.grades[ Math.min(score ,data.layout.grades.length -1) ]
                 this.DrawPiePartPartArea(ctx, 0, grade.width * scale * diagram.radius / 10,
                     center, index * 360 / partCount, (index + 1) * 360 / partCount, grade.color)
 
@@ -41,7 +41,7 @@ export class RenderCanvas  {
                 let previousRadius = 0
                 console.log(score);
                 for (let si = 0; si <= score; si++) {
-                    let grade = data.layout.grades[si]
+                    let grade = data.layout.grades[Math.min(si ,data.layout.grades.length -1)]  
                     this.DrawPiePartPartArea(ctx, previousRadius * scale * diagram.radius / 10,
                         grade.width * scale * diagram.radius / 10, center,
                         index * 360 / partCount, (index + 1) * 360 / partCount, grade.color)

@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "jsoneditor-react": "^0.1.9",
+    "jszip": "^3.1.5",
     "office-ui-fabric-react": "^6.72.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
