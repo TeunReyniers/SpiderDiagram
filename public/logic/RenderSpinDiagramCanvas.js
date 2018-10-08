@@ -1,6 +1,6 @@
-export class RenderCanvas {
+export class RenderCanvas  {
 
-    static formatText(text) {
+    static formatText (text) {
         if (text.substr(0, 1) == '"') {
             return text.substr(1, text.length)
         }
@@ -8,8 +8,11 @@ export class RenderCanvas {
     }
 
     static drawCanvas(data, canvasId, student, width) {
+       
+        console.log('render canvas');
+        
 
-        const scale = width / 200;
+        const scale = width/200;
         const lineScale = scale / 3
         const center = data.format.diagram.position && this.ScalePoint(scale, data.format.diagram.position) || { X: data.format.canvas_size.width / 2, Y: data.format.canvas_size.height / 2 }
         const partCount = data.layout.sectors.reduce((c, s) => c + s.parts.length, 0)
@@ -18,14 +21,9 @@ export class RenderCanvas {
         let canvas = document.getElementById(canvasId);
 
 
-        // canvas.setAttribute('width', width);
-        // canvas.setAttribute('height', width * data.format.ratio);
-        canvas.width = width;
-        canvas.height = width * data.format.ratio;
-        canvas.style.width = width / window.devicePixelRatio + "px";
-        canvas.style.height = width * data.format.ratio / window.devicePixelRatio + "px";
+        canvas.setAttribute('width', width);
+        canvas.setAttribute('height', width*data.format.ratio);
         var ctx = canvas.getContext("2d");
-        ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 
         //Title
         this.DrawTextSmart(ctx, data.layout.title, data.format.title, scale, data.format.title.color)
@@ -35,7 +33,7 @@ export class RenderCanvas {
         let index = 0
         student.scores.forEach(score => {
             if (data.format.fillmode == "piece") {
-                const grade = data.layout.grades[Math.min(score, data.layout.grades.length - 1)]
+                const grade = data.layout.grades[ Math.min(score ,data.layout.grades.length -1) ]
                 this.DrawPiePartPartArea(ctx, 0, grade.width * scale * diagram.radius / 10,
                     center, index * 360 / partCount, (index + 1) * 360 / partCount, grade.color)
 
@@ -43,7 +41,7 @@ export class RenderCanvas {
                 let previousRadius = 0
                 console.log(score);
                 for (let si = 0; si <= score; si++) {
-                    let grade = data.layout.grades[Math.min(si, data.layout.grades.length - 1)]
+                    let grade = data.layout.grades[Math.min(si ,data.layout.grades.length -1)]  
                     this.DrawPiePartPartArea(ctx, previousRadius * scale * diagram.radius / 10,
                         grade.width * scale * diagram.radius / 10, center,
                         index * 360 / partCount, (index + 1) * 360 / partCount, grade.color)
@@ -59,7 +57,7 @@ export class RenderCanvas {
         data.layout.grades.forEach(grade => {
             this.DrawCircle(ctx, grade.width * scale * diagram.radius / 10,
                 center, diagram.lines.circles.color, diagram.lines.circles.width * lineScale)
-            this.DrawText(ctx, grade.name,
+                this.DrawText(ctx, grade.name,
                 {
                     X: center.X + diagram.text.circles.offset.X,
                     Y: center.Y - (previousRadius * diagram.radius / 10 - diagram.text.circles.offset.Y) * scale
@@ -186,7 +184,7 @@ export class RenderCanvas {
         this.DrawText(ctx, text, this.ScalePoint(scale, textStyle.position), this.GetFontStyle(scale, textStyle.font || { type: 'Arial', size: 5, style: '' }), textStyle.alignment || 'center', textStyle.rotation || 0, color)
     }
 
-    static DrawTextSmart2(ctx, text, textStyle, scale, defaultPosition) {
+    static  DrawTextSmart2(ctx, text, textStyle, scale, defaultPosition) {
         this.DrawText(ctx, text, this.ScalePoint(scale, textStyle ? textStyle.position || defaultPosition : defaultPosition), this.GetFontStyle(scale, textStyle ? textStyle.font || { type: 'Arial', size: 5, style: '' } : { type: 'Arial', size: 5, style: '' }), textStyle ? textStyle.alignment || 'center' : 'center', textStyle ? textStyle.rotation || 0 : 0)
     }
 
