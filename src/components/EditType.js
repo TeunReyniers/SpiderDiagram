@@ -85,8 +85,8 @@ export class EditType extends Component {
                       ></TextField>
                     <div style={{ height: 'calc(100% - 100px)' }}>
                         <Editor value={this.state.type}
-                            mode='form'
-                            allowedModes={['code', 'form']}
+                            mode='tree'
+                            allowedModes={['code', 'tree']}
                             htmlElementProps={{ style: { height: '100%' } }}
                             onChange={this._jsonChanged} />
                     </div>
