@@ -53,10 +53,19 @@ export class Options extends Component {
             this.setState({ new: false })
           }} />
         <IconButton
-          iconProps={{ iconName: 'Add' }}
+          iconProps={{ iconName: 'Copy' }}
+          title='Make a copy'
+          ariaLabel='Make a copy'
           onClick={() => {
             this.setState({ styleEditOpen: true })
             this.setState({ new: true })
+          }} />
+        <IconButton
+          iconProps={{ iconName: 'Delete' }}
+          title='Delete this style'
+          ariaLabel='Delete this style'
+          onClick={() => {           
+             this.props.onChange('StyleDeleted', { key: this.state.selectedStyle })           
           }} />
       </div>
       <div className="flexColumns">
@@ -73,7 +82,7 @@ export class Options extends Component {
           componentRef={this._basicComboBoxComponentRef}
           onChange={(e, option) => {
             this.setState({ selectedType: option.key })
-            this.props.onSelectionChanged(this.state.selectedStyle, option.key)
+            this.props.onSelectionChange(this.state.selectedStyle, option.key)
           }} />
         <IconButton
           iconProps={{ iconName: 'Edit' }}
@@ -84,7 +93,9 @@ export class Options extends Component {
             this.setState({ new: false })
           }} />
         <IconButton
-          iconProps={{ iconName: 'Add' }}
+         iconProps={{ iconName: 'Copy' }}
+         title='Make a copy'
+         ariaLabel='Make a copy'
           onClick={() => {
             this.setState({ typeEditOpen: true })
             this.setState({ new: true })
@@ -100,7 +111,7 @@ export class Options extends Component {
           onCancel={() => { this.setState({ styleEditOpen: false }) }}
           onSave={(key, name, style) => {
             this.setState({ styleEditOpen: false })
-            if (key >= 0) {
+            if (key >= 0){
               this.props.onChange('StyleEdited', { key: key, name: name, style: style })
             } else {
               this.props.onChange('StyleAdded', { name: name, style: style })

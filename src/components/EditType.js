@@ -19,55 +19,60 @@ export class EditType extends Component {
     }
 
     componentDidMount() {
-       
+
         if (!this.props.new) {
             if (this.props.type.type !== undefined) {
                 this.setState({
                     type: this.props.type.type,
                     name: this.props.type.name,
                     key: this.props.type.key
-                })            }
-        }else{
+                })
+            }
+        } else {
             this.setState({
-                key: -1,
-                name: '',
-                type:  {
-                    title: "Wiskunde - getallenleer",
-                    sectors: [
-                        {
-                            name: "Gehelegetallen",
-                            parts: [
-                                { name: "optellen" },
-                                { name: "aftrekken" },
-                                { name: "delen" },
-                                { name: "vermenigvuldigen" }
-                            ]
-                        },
-                        {
-                            name: "Breuken", parts: [
-                                { name: "optellen" },
-                                { name: "aftrekken" },
-                                { name: "delen" },
-                                { name: "vermenigvuldigen" }
-                            ]
-                        },
-                        {
-                            name: "Complex", parts: [
-                                { name: "optellen" },
-                                { name: "aftrekken" },
-                                { name: "vermenigvuldigen" },
-                            ]
-                        }
-                    ],
-                    grades: [
-                        { name: "Onvoldoende", width: 3, color: '#3b8686' },
-                        { name: "Voldoende", width: 6, color: '#79bd9a' },
-                        { name: "Goed", width: 9, color: '#a8dba8' },
-                        { name: "Stoppen met werken", width: 10, color: '#cff09e' },
-                    ]
-                },
-    
-            })
+                type: this.props.type.type,
+                name: this.props.type.name  + '_copy',
+                key: -1
+            }) 
+            // this.setState({
+            //     key: -1,
+            //     name: '',
+            //     type: {
+            //         title: "Wiskunde - getallenleer",
+            //         sectors: [
+            //             {
+            //                 name: "Gehelegetallen",
+            //                 parts: [
+            //                     { name: "optellen" },
+            //                     { name: "aftrekken" },
+            //                     { name: "delen" },
+            //                     { name: "vermenigvuldigen" }
+            //                 ]
+            //             },
+            //             {
+            //                 name: "Breuken", parts: [
+            //                     { name: "optellen" },
+            //                     { name: "aftrekken" },
+            //                     { name: "delen" },
+            //                     { name: "vermenigvuldigen" }
+            //                 ]
+            //             },
+            //             {
+            //                 name: "Complex", parts: [
+            //                     { name: "optellen" },
+            //                     { name: "aftrekken" },
+            //                     { name: "vermenigvuldigen" },
+            //                 ]
+            //             }
+            //         ],
+            //         grades: [
+            //             { name: "Onvoldoende", width: 3, color: '#3b8686' },
+            //             { name: "Voldoende", width: 6, color: '#79bd9a' },
+            //             { name: "Goed", width: 9, color: '#a8dba8' },
+            //             { name: "Stoppen met werken", width: 10, color: '#cff09e' },
+            //         ]
+            //     },
+            // })
         }
     }
 
@@ -82,7 +87,7 @@ export class EditType extends Component {
                         label="Name"
                         value={this.state.name}
                         onChange={(e, v) => this.setState({ name: v })}
-                      ></TextField>
+                    ></TextField>
                     <div style={{ height: 'calc(100% - 100px)' }}>
                         <Editor value={this.state.type}
                             mode='tree'
