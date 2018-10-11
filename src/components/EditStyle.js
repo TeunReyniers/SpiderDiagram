@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
-import { PrimaryButton, Button } from 'office-ui-fabric-react/lib/Button'
+import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
 import { JsonEditor as Editor } from 'jsoneditor-react'
 import { RenderCanvas } from '../logic/RenderSpinDiagramCanvas.js'
 import 'jsoneditor-react/es/editor.min.css'
 import ReactResizeDetector from 'react-resize-detector'
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
+import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
 
 
 export class EditStyle extends Component {
@@ -163,7 +164,7 @@ export class EditStyle extends Component {
                             console.log(this.state.name)
 
                         }}>Save</PrimaryButton>
-                        <Button onClick={() => { this.props.onCancel() }}>Cancel</Button>
+                        <DefaultButton onClick={() => { this.props.onCancel() }}>Cancel</DefaultButton>
                     </div>
                 </div>
                 <div id="StyleCanvasWrapper" style={{ width: '60%', overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
