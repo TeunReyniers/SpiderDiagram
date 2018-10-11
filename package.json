@@ -1,8 +1,8 @@
 {
   "name": "SpiderDiagram",
   "version": "0.1.2",
-  "description": "Electron app powered by CRA",
-  "author": "OSS Community",
+  "description": "An Electron app to make spider diagrams",
+  "author": "Teun Reyniers",
   "private": true,
   "devServer": {
     "open": false
@@ -11,10 +11,12 @@
     "electron": "^3.0.0",
     "electron-builder": "^20.28.4",
     "electron-packager": "^12.1.2",
+    "electron-winstaller": "^2.7.0",
     "foreman": "^3.0.1",
     "react-scripts": "^1.1.5"
   },
   "dependencies": {
+    "electron-builder-squirrel-windows": "^20.28.3",
     "jsoneditor-react": "^0.1.9",
     "jszip": "^3.1.5",
     "office-ui-fabric-react": "^6.72.1",
@@ -37,6 +39,7 @@
   },
   "build": {
     "appId": "com.electron.hibernia.SpiderDiagram",
+    "productName": "SpiderDiagram",
     "win": {
       "target": "squirrel",
       "icon": "build/icon.ico"
