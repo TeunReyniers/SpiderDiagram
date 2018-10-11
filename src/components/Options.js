@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { PrimaryButton, Button, IconButton } from 'office-ui-fabric-react/lib/Button'
+import { PrimaryButton, DefaultButton, IconButton } from 'office-ui-fabric-react/lib/Button'
 import { Label } from 'office-ui-fabric-react/lib/Label'
 import { ComboBox } from 'office-ui-fabric-react/lib/ComboBox'
 import { Icon } from 'office-ui-fabric-react/lib/Icon'
