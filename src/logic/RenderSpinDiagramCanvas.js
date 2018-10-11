@@ -18,14 +18,14 @@ export class RenderCanvas {
         let canvas = document.getElementById(canvasId);
 
 
-        // canvas.setAttribute('width', width);
-        // canvas.setAttribute('height', width * data.format.ratio);
-        canvas.width = width;
-        canvas.height = width * data.format.ratio;
-        canvas.style.width = width / window.devicePixelRatio + "px";
-        canvas.style.height = width * data.format.ratio / window.devicePixelRatio + "px";
+        canvas.setAttribute('width', width);
+        canvas.setAttribute('height', width * data.format.ratio);
+        //canvas.width = width;
+        //canvas.height = width * data.format.ratio;
+        //canvas.style.width = width / window.devicePixelRatio + "px";
+        //canvas.style.height = width * data.format.ratio / window.devicePixelRatio + "px";
         var ctx = canvas.getContext("2d");
-        ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
+        //ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 
         //Title
         this.DrawTextSmart(ctx, data.layout.title, data.format.title, scale, data.format.title.color)

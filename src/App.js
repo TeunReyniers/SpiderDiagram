@@ -238,6 +238,11 @@ class App extends Component {
               array.push(e)
               this.setState({ styles: array })
               styleStore.set('styles', array)
+            } else if (c == 'StyleDeleted'){
+              let array = this.state.types.filter(s => s.key !== e.key)
+              //array.push({ key: Math.max(...this.state.types.map(s => s.key)) + 1, name: e.name, type: e.type })
+              this.setState({ types: array })
+              typeStore.set('types', array)
             } else if (c == 'TypeAdded') {
               let array = this.state.types.map(s => s)
               array.push({ key: Math.max(...this.state.types.map(s => s.key)) + 1, name: e.name, type: e.type })

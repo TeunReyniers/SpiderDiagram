@@ -30,110 +30,115 @@ export class EditStyle extends Component {
             }
         }else{
             this.setState({
-                calloutVisible: false,
-                key: -1,
-                name: '',
-                style: {
-                    ratio: 1.2,
-                    fillmode: 'piece',
-                    title: {
-                        font: {
-                            type: 'Arial',
-                            size: 7,
-                            style: 'bold',
-                        },
-                        color: 'black',
-                        position: {
-                            X: 100,
-                            Y: 14
-                        },
-                        rotation: 0,
-                        alignment: 'center'
-                    },
-                    student: {
-                        font: {
-                            type: 'Arial',
-                            size: 5,
-                            style: '',
-                        },
-                        color: 'black',
-                        position: {
-                            X: 100,
-                            Y: 20
-                        },
-                        rotation: 0,
-                        alignment: 'center'
-                    },
-                    diagram: {
-                        position: {
-                            X: 100,
-                            Y: 120,
-                        },
-                        radius: 80,
-                        lines: {
-                            sector: {
-                                color: '#1f4e5f',
-                                width: 2,
-                                length: 10.5
-                            },
-                            part: {
-                                color: '#aacfd0',
-                                width: 1,
-                                length: 10
-                            },
-                            circles: {
-                                color: '#aacfd0',
-                                width: 1,
-                            }
-                        },
-                        text: {
-                            sector: {
-                                font: {
-                                    type: 'Arial',
-                                    size: 7,
-                                    style: 'bold',
-                                },
-                                color: 'black',
-                                radius: 11,
-                                rotation: 0,
-                                smartRotate: false,
-                                smartRotateDirection: 'horizontal', // or horizontal
-                                smartRotateInvert: false,
-                                bow: true,
-                            },
-                            part: {
-                                font: {
-                                    type: 'Arial',
-                                    size: 4.5,
-                                    style: '',
-                                },
-                                color: 'black',
-                                radius: 9.4,
-                                rotation: 0,
-                                smartRotate: false,
-                                smartRotateDirection: 'horizontal', // or horizontal
-                                smartRotateInvert: false,
-                                bow: true,
-                            },
-                            circles: {
-                                font: {
-                                    type: 'Arial',
-                                    size: 3,
-                                    style: 'bold',
-    
-                                },
-                                color: 'black',
-                                offset: {
-                                    X: -3, Y: -3
-                                },
-                                rotation: -90,
-                                alignment: 'left'
-                            }
-                        }
-                    }
-                },
-    
+                style: this.props.style.style,
+                name: this.props.style.name + '_copy',
+                key: -1
             })
+            // this.setState({
+            //     calloutVisible: false,
+            //     key: -1,
+            //     name: '',
+            //     style: {
+            //         ratio: 1.2,
+            //         fillmode: 'piece',
+            //         title: {
+            //             font: {
+            //                 type: 'Arial',
+            //                 size: 7,
+            //                 style: 'bold',
+            //             },
+            //             color: 'black',
+            //             position: {
+            //                 X: 100,
+            //                 Y: 14
+            //             },
+            //             rotation: 0,
+            //             alignment: 'center'
+            //         },
+            //         student: {
+            //             font: {
+            //                 type: 'Arial',
+            //                 size: 5,
+            //                 style: '',
+            //             },
+            //             color: 'black',
+            //             position: {
+            //                 X: 100,
+            //                 Y: 20
+            //             },
+            //             rotation: 0,
+            //             alignment: 'center'
+            //         },
+            //         diagram: {
+            //             position: {
+            //                 X: 100,
+            //                 Y: 120,
+            //             },
+            //             radius: 80,
+            //             lines: {
+            //                 sector: {
+            //                     color: '#1f4e5f',
+            //                     width: 2,
+            //                     length: 10.5
+            //                 },
+            //                 part: {
+            //                     color: '#aacfd0',
+            //                     width: 1,
+            //                     length: 10
+            //                 },
+            //                 circles: {
+            //                     color: '#aacfd0',
+            //                     width: 1,
+            //                 }
+            //             },
+            //             text: {
+            //                 sector: {
+            //                     font: {
+            //                         type: 'Arial',
+            //                         size: 7,
+            //                         style: 'bold',
+            //                     },
+            //                     color: 'black',
+            //                     radius: 11,
+            //                     rotation: 0,
+            //                     smartRotate: false,
+            //                     smartRotateDirection: 'horizontal', // or horizontal
+            //                     smartRotateInvert: false,
+            //                     bow: true,
+            //                 },
+            //                 part: {
+            //                     font: {
+            //                         type: 'Arial',
+            //                         size: 4.5,
+            //                         style: '',
+            //                     },
+            //                     color: 'black',
+            //                     radius: 9.4,
+            //                     rotation: 0,
+            //                     smartRotate: false,
+            //                     smartRotateDirection: 'horizontal', // or horizontal
+            //                     smartRotateInvert: false,
+            //                     bow: true,
+            //                 },
+            //                 circles: {
+            //                     font: {
+            //                         type: 'Arial',
+            //                         size: 3,
+            //                         style: 'bold',
+    
+            //                     },
+            //                     color: 'black',
+            //                     offset: {
+            //                         X: -3, Y: -3
+            //                     },
+            //                     rotation: -90,
+            //                     alignment: 'left'
+            //                 }
+            //             }
+            //         }
+            //     },
+    
+            // })
         }
     }
 
