@@ -1,6 +1,6 @@
 {
   "name": "SpiderDiagram",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Electron app powered by CRA",
   "author": "OSS Community",
   "private": true,
