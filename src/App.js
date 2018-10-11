@@ -238,11 +238,12 @@ class App extends Component {
               array.push(e)
               this.setState({ styles: array })
               styleStore.set('styles', array)
-            } else if (c == 'StyleDeleted'){
-              let array = this.state.types.filter(s => s.key !== e.key)
-              //array.push({ key: Math.max(...this.state.types.map(s => s.key)) + 1, name: e.name, type: e.type })
-              this.setState({ types: array })
-              typeStore.set('types', array)
+            } else if (c == 'StyleDeleted') {
+              let array = this.state.styles.filter(s => s.key !== e.key)
+              if (e.key !== 0) {
+                this.setState({ styles: array,styleKey: 0 })
+                styleStore.set('styles', array)
+              }
             } else if (c == 'TypeAdded') {
               let array = this.state.types.map(s => s)
               array.push({ key: Math.max(...this.state.types.map(s => s.key)) + 1, name: e.name, type: e.type })
@@ -253,6 +254,13 @@ class App extends Component {
               array.push(e)
               this.setState({ types: array })
               typeStore.set('types', array)
+            }else if (c == 'TypeDeleted') {
+              let array = this.state.types.filter(s => s.key !== e.key)
+              if (e.key !== 0) {
+                this.setState({ types: array ,
+                  typeKey: 0})
+                typeStore.set('types', array)
+              }
             }
           }}
             onSelectionChange={(s, t) => {
@@ -366,7 +374,7 @@ class App extends Component {
     students && RenderCanvas.drawCanvas({
       format: style.style,
       layout: type.type
-    }, 'MainCanvas', students,  width)
+    }, 'MainCanvas', students, width)
   }
 
   _addStudents(ltext) {
@@ -407,39 +415,39 @@ class App extends Component {
     // app.getPath("desktop")       // User's Desktop folder
     // app.getPath("documents")     // User's "My Documents" folder
     // app.getPath("downloads")     // User's Downloads folder
-  
+
     var toLocalPath = path.resolve(app.getPath("desktop"), 'spindiagram.zip')
     let userChosenPath = dialog.showSaveDialog({ defaultPath: toLocalPath })
-  
+
     if (userChosenPath) {
-      this._downloadAll( userChosenPath)
+      this._downloadAll(userChosenPath)
     }
   }
-  
+
   _download(dest, content) {
     fs.writeFileSync(dest, new Buffer(content));
   };
-  
+
   _downloadAll(dest) {
     var zip = new JSZip()
     const index = this.state.selectedStudent ? this.state.selectedStudent.key : 0
     for (let q = 0; q < this.state.students.length; q++) {
 
-      this._renderCanvasFinal(undefined,undefined, this.state.students[q])
-        const canvas = document.getElementById("MainCanvas");
-        const ctx = canvas.getContext("2d");
-  
-        var savable = new Image();
-        savable.src = canvas.toDataURL();
-        zip.file(this.state.students[q].name + ".png", savable.src.substr(savable.src.indexOf(',') + 1), { base64: true })
-    }
-  
-    zip.generateAsync({type: "uint8array"})
-        .then( (content) => {
-            this._download(dest, content)
-        });
+      this._renderCanvasFinal(undefined, undefined, this.state.students[q])
+      const canvas = document.getElementById("MainCanvas");
+      const ctx = canvas.getContext("2d");
 
-        this._renderCanvas(undefined, undefined,this.state.students[index])
+      var savable = new Image();
+      savable.src = canvas.toDataURL();
+      zip.file(this.state.students[q].name + ".png", savable.src.substr(savable.src.indexOf(',') + 1), { base64: true })
+    }
+
+    zip.generateAsync({ type: "uint8array" })
+      .then((content) => {
+        this._download(dest, content)
+      });
+
+    this._renderCanvas(undefined, undefined, this.state.students[index])
   }
 }
 

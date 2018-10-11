@@ -6,7 +6,7 @@ import { RenderCanvas } from '../logic/RenderSpinDiagramCanvas.js'
 import 'jsoneditor-react/es/editor.min.css'
 import ReactResizeDetector from 'react-resize-detector'
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
-import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
+
 
 
 export class EditStyle extends Component {
