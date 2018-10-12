@@ -41,7 +41,7 @@
     "appId": "com.electron.hibernia.SpiderDiagram",
     "productName": "SpiderDiagram",
     "win": {
-      "target": "squirrel",
+      "target": "zip",
       "icon": "build/icon.ico"
     },
     "dmg": {
