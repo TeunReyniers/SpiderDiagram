@@ -53,6 +53,9 @@
     "mac":{
       "target": ["dmg", "pkg"]
     },
+    "pkg":{
+      "license": "./eula.txt"
+    },
     "dmg": {
       "contents": [
         {
