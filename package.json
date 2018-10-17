@@ -47,7 +47,11 @@
     "nsis": {
       "oneClick": false,
       "allowElevation": false,
+      "license": "./eula.txt",
       "guid": "9d46424c-83a7-4610-a3e5-4236fbb5a427"
+    },
+    "mac":{
+      "target": ["dmg", "pkg"]
     },
     "dmg": {
       "contents": [
