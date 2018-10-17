@@ -161,7 +161,7 @@ export class Options extends Component {
         type={PanelType.smallFluid}
         onDismiss={() => this.setState({ styleEditOpen: false })}
         headerText="Edit Style">
-        <EditStyle new={this.state.new} style={this.props.items.styles.filter(s => s.key == this.props.items.styleKey)[0]}
+        <EditStyle new={this.state.new} style={this.props.items.styles.filter(s => s.key === this.props.items.styleKey)[0]}
           onCancel={() => { this.setState({ styleEditOpen: false }) }}
           onSave={(key, name, style) => {
             this.setState({ styleEditOpen: false })
@@ -178,7 +178,7 @@ export class Options extends Component {
         type={PanelType.smallFluid}
         onDismiss={() => this.setState({ typeEditOpen: false })}
         headerText="Edit Type">
-        <EditType new={this.state.new} type={this.props.items.types.filter(s => s.key == this.props.items.typeKey)[0]}
+        <EditType new={this.state.new} type={this.props.items.types.filter(s => s.key === this.props.items.typeKey)[0]}
           onCancel={() => { this.setState({ typeEditOpen: false }) }}
           onSave={(key, name, type) => {
             this.setState({ typeEditOpen: false })
