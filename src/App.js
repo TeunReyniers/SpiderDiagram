@@ -309,7 +309,7 @@ class App extends Component {
                       this._addStudents(l)
                     }
                   }} 
-                  download={
+                  onDownload={
                     () => {
                       this._myUrlSaveAs()
                     }

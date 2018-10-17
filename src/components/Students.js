@@ -32,14 +32,14 @@ export class Students extends Component {
             <div style={{ padding: '0px' }}>
                 <DefaultButton onClick={this._showDialog}>Add</DefaultButton>
                 <DefaultButton onClick={() => this.props.onChange('Clear', '')}>
-                 {selectedStudentsCount === 0  || selectedStudentsCount === this.props.items.length 
-                    ? 'Clear all' 
-                    : `Clear (${selectedStudentsCount})`}
-                 </DefaultButton>
+                    {selectedStudentsCount === 0 || selectedStudentsCount === this.props.items.length
+                        ? 'Clear all'
+                        : `Clear (${selectedStudentsCount})`}
+                </DefaultButton>
                 <PrimaryButton onClick={() => this.props.onDownload()}>
-                {selectedStudentsCount === 0  || selectedStudentsCount === this.props.items.length 
-                    ? 'Download all' 
-                    : `Download (${selectedStudentsCount})`}
+                    {selectedStudentsCount === 0 || selectedStudentsCount === this.props.items.length
+                        ? 'Download all'
+                        : `Download (${selectedStudentsCount})`}
                 </PrimaryButton>
                 <List items={this.props.items.sort(this._compareStudents)} onRenderCell={this._renderCheckboxCell} />
             </div>
@@ -58,30 +58,33 @@ export class Students extends Component {
                     isBlocking: true,
                     containerClassName: 'ms-dialogMainOverride'
                 }}>
-                <TextField multiline
+                <TextField
+                    multiline
                     rows={5}
                     required={true}
                     value={this.state.NewStudents}
                     onChange={(e, v) => this.setState({ NewStudents: this._formatText(v) })}></TextField>
                 <DialogFooter>
-                    <PrimaryButton onClick={() => {
-                        this.props.onChange('Add', this.state.NewStudents)
-                        this.setState({ NewStudents: '' })
-                        this._closeDialog()
-                    }} text="Insert" />
+                    <PrimaryButton
+                        onClick={() => {
+                            this.props.onChange('Add', this.state.NewStudents)
+                            this.setState({ NewStudents: '' })
+                            this._closeDialog()
+                        }}
+                        text="Insert" />
                     <DefaultButton onClick={this._closeDialog} text="Cancel" />
                 </DialogFooter>
             </Dialog>
         </div>
     }
 
-    _compareStudents(a,b) {
+    _compareStudents(a, b) {
         if (a.name < b.name)
-          return -1;
-          if (a.name > b.name)
-          return 1;
+            return -1;
+        if (a.name > b.name)
+            return 1;
         return 0;
-      }
+    }
 
     _formatText(text) {
         if (text.substr(0, 1) == '"') {
