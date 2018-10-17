@@ -227,42 +227,45 @@ class App extends Component {
     return (
       <div className="App FullScreen flexRows">
         <div>
-          <Options items={this.state} onChange={(c, e) => {
-            if (c == 'StyleAdded') {
-              let array = this.state.styles.map(s => s)
-              array.push({ key: Math.max(...this.state.styles.map(s => s.key)) + 1, name: e.name, style: e.style })
-              this.setState({ styles: array })
-              styleStore.set('styles', array)
-            } else if (c == 'StyleEdited') {
-              let array = this.state.styles.filter(s => s.key != e.key)
-              array.push(e)
-              this.setState({ styles: array })
-              styleStore.set('styles', array)
-            } else if (c == 'StyleDeleted') {
-              let array = this.state.styles.filter(s => s.key !== e.key)
-              if (e.key !== 0) {
-                this.setState({ styles: array,styleKey: 0 })
+          <Options items={this.state}
+            onChange={(c, e) => {
+              if (c == 'StyleAdded') {
+                let array = this.state.styles.map(s => s)
+                array.push({ key: Math.max(...this.state.styles.map(s => s.key)) + 1, name: e.name, style: e.style })
+                this.setState({ styles: array })
                 styleStore.set('styles', array)
-              }
-            } else if (c == 'TypeAdded') {
-              let array = this.state.types.map(s => s)
-              array.push({ key: Math.max(...this.state.types.map(s => s.key)) + 1, name: e.name, type: e.type })
-              this.setState({ types: array })
-              typeStore.set('types', array)
-            } else if (c == 'TypeEdited') {
-              let array = this.state.types.filter(s => s.key != e.key)
-              array.push(e)
-              this.setState({ types: array })
-              typeStore.set('types', array)
-            }else if (c == 'TypeDeleted') {
-              let array = this.state.types.filter(s => s.key !== e.key)
-              if (e.key !== 0) {
-                this.setState({ types: array ,
-                  typeKey: 0})
+              } else if (c == 'StyleEdited') {
+                let array = this.state.styles.filter(s => s.key != e.key)
+                array.push(e)
+                this.setState({ styles: array })
+                styleStore.set('styles', array)
+              } else if (c == 'StyleDeleted') {
+                let array = this.state.styles.filter(s => s.key !== e.key)
+                if (e.key !== 0) {
+                  this.setState({ styles: array, styleKey: 0 })
+                  styleStore.set('styles', array)
+                }
+              } else if (c == 'TypeAdded') {
+                let array = this.state.types.map(s => s)
+                array.push({ key: Math.max(...this.state.types.map(s => s.key)) + 1, name: e.name, type: e.type })
+                this.setState({ types: array })
                 typeStore.set('types', array)
+              } else if (c == 'TypeEdited') {
+                let array = this.state.types.filter(s => s.key != e.key)
+                array.push(e)
+                this.setState({ types: array })
+                typeStore.set('types', array)
+              } else if (c == 'TypeDeleted') {
+                let array = this.state.types.filter(s => s.key !== e.key)
+                if (e.key !== 0) {
+                  this.setState({
+                    types: array,
+                    typeKey: 0
+                  })
+                  typeStore.set('types', array)
+                }
               }
-            }
-          }}
+            }}
             onSelectionChange={(s, t) => {
               this.setState({ styleKey: s, typeKey: t })
               this._renderCanvas(undefined, { style: s, type: t }, undefined)
@@ -291,17 +294,26 @@ class App extends Component {
                   }} />
               </Group>
               <Group title='students'>
-                <Students items={this.state.students} onChange={(c, l) => {
-                  if (c === 'Clear') {
-                    this.setState({ 'students': [] })
-                  } else if (c === 'Add') {
-                    this._addStudents(l)
-                  }
-                }} download={
-                  () => {
-                    this._myUrlSaveAs()
-                  }
-                }></Students>
+                <Students items={this.state.students}
+                  onSelectionChange={(key, selected) => {
+                    let array = this.state.students.filter(s => s.key !== key)
+                    let element = this.state.students.filter(s => s.key === key)[0]
+                    element.isSelected = selected
+                    array.push(element)
+                    this.setState({ students: array })
+                  }}
+                  onChange={(c, l) => {
+                    if (c === 'Clear') {
+                      this.setState({ 'students': this.state.students.filter(s=>!s.isSelected)})
+                    } else if (c === 'Add') {
+                      this._addStudents(l)
+                    }
+                  }} 
+                  download={
+                    () => {
+                      this._myUrlSaveAs()
+                    }
+                  }></Students>
               </Group>
             </div>
           </div>
@@ -433,6 +445,7 @@ class App extends Component {
     const index = this.state.selectedStudent ? this.state.selectedStudent.key : 0
     for (let q = 0; q < this.state.students.length; q++) {
 
+      if (!this.state.students[q].isSelected) continue
       this._renderCanvasFinal(undefined, undefined, this.state.students[q])
       const canvas = document.getElementById("MainCanvas");
       const ctx = canvas.getContext("2d");
