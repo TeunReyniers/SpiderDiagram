@@ -1,6 +1,6 @@
 {
   "name": "SpiderDiagram",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "An Electron app to make spider diagrams",
   "author": "Teun Reyniers",
   "private": true,
@@ -41,8 +41,13 @@
     "appId": "com.electron.hibernia.SpiderDiagram",
     "productName": "SpiderDiagram",
     "win": {
-      "target": "zip",
+      "target": ["nsis", "zip", "portable"],
       "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": false,
+      "guid": "9d46424c-83a7-4610-a3e5-4236fbb5a427"
     },
     "dmg": {
       "contents": [
@@ -59,7 +64,8 @@
       ]
     },
     "directories": {
-      "buildResources": "public"
+      "buildResources": "public",
+      "output": "dist"
     }
   }
 }

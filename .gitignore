@@ -8,6 +8,7 @@ coverage
 
 # production
 build
+electron
 
 # misc
 .DS_Store
