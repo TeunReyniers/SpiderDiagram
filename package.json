@@ -41,7 +41,11 @@
     "appId": "com.electron.hibernia.SpiderDiagram",
     "productName": "SpiderDiagram",
     "win": {
-      "target": ["nsis", "zip", "portable"],
+      "target": [
+        "nsis",
+        "zip",
+        "portable"
+      ],
       "icon": "build/icon.ico"
     },
     "nsis": {
@@ -50,10 +54,13 @@
       "license": "./eula.txt",
       "guid": "9d46424c-83a7-4610-a3e5-4236fbb5a427"
     },
-    "mac":{
-      "target": ["dmg", "pkg"]
+    "mac": {
+      "target": [
+        "dmg",
+        "pkg"
+      ]
     },
-    "pkg":{
+    "pkg": {
       "license": "./eula.txt"
     },
     "dmg": {
