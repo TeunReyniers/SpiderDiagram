@@ -9,7 +9,7 @@ const BrowserWindow = electron.BrowserWindow;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow;
+let mainWindow
 
 // First instantiate the class
 const userPreferences = new Store({
@@ -22,8 +22,23 @@ const userPreferences = new Store({
 });
 
 function createWindow() {
-    // Create the browser window.
-    mainWindow = new BrowserWindow({ ...userPreferences.get('windowBounds'), icon: __dirname + '/../build/Bluetooth.ico'});
+
+    mainWindow = new BrowserWindow({ ...userPreferences.get('windowBounds'),show: false, icon: __dirname + '/../build/Bluetooth.ico' })
+   
+    // create a new `splash`-Window 
+    splash = new BrowserWindow({width: 450, height: 300, transparent: true, frame: false, alwaysOnTop: true});
+    const splashUrl =  url.format({
+        pathname: path.join(__dirname, '/../public/splash.html'),
+        protocol: 'file:',
+        slashes: true
+    });
+    splash.loadURL(splashUrl);
+    
+    // if main window is ready to show, then destroy the splash window and show up the main window
+    mainWindow.once('ready-to-show', () => {
+      splash.destroy();
+      mainWindow.show();
+    });
 
     // and load the index.html of the app.
     const startUrl = process.env.ELECTRON_START_URL || url.format({
@@ -52,7 +67,13 @@ function createWindow() {
         // Now that we have them, save them using the `set` method.
         userPreferences.set('windowBounds', { width, height });
     });
+
+    mainWindow.on('ready-to-show', () => {
+
+    })
 }
+
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
