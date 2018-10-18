@@ -28,7 +28,7 @@ function createWindow() {
     // create a new `splash`-Window 
     splash = new BrowserWindow({width: 450, height: 300, transparent: true, frame: false, alwaysOnTop: true});
     const splashUrl =  url.format({
-        pathname: path.join(__dirname, '/../public/splash.html'),
+        pathname: path.join(__dirname, '/../build/splash.html'),
         protocol: 'file:',
         slashes: true
     });
