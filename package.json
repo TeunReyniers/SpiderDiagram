@@ -10,13 +10,12 @@
   "devDependencies": {
     "electron": "^3.0.0",
     "electron-builder": "^20.28.4",
-    "electron-packager": "^12.1.2",
-    "electron-winstaller": "^2.7.0",
-    "foreman": "^3.0.1",
-    "react-scripts": "^1.1.5"
-  },
-  "dependencies": {
     "electron-builder-squirrel-windows": "^20.28.3",
+    "foreman": "^3.0.1",
+    "react-scripts": "^1.1.5",
+    "copyfiles": "^2.1.0"
+  },
+  "dependencies": {    
     "jsoneditor-react": "^0.1.9",
     "jszip": "^3.1.5",
     "office-ui-fabric-react": "^6.72.1",
@@ -25,7 +24,7 @@
     "react-resize-detector": "^3.1.3"
   },
   "homepage": "./",
-  "main": "src/electron-starter.js",
+  "main": "src/electron.js",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -34,7 +33,7 @@
     "electron": "electron .",
     "dev": "nf start -p 3000",
     "pack": "build --dir",
-    "dist": "npm run build && build",
+    "dist": "copyfiles -f ./src/electron.js public && npm run build && build",
     "postinstall": "install-app-deps"
   },
   "build": {
