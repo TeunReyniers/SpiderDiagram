@@ -1,21 +1,38 @@
 import React, { Component } from 'react'
-
 import { PrimaryButton, DefaultButton, IconButton } from 'office-ui-fabric-react/lib/Button'
 import { Label } from 'office-ui-fabric-react/lib/Label'
 import { ComboBox } from 'office-ui-fabric-react/lib/ComboBox'
-import { Icon } from 'office-ui-fabric-react/lib/Icon'
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel'
 import { EditStyle } from './EditStyle'
 import { EditType } from './EditType'
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
+const ReactMarkdown = require('react-markdown')
+const whatsNew  = `
+## Version: 0.1.2
+- First release
 
-export class Options extends Component {
+## Version: 0.1.3
+- Only selected students or being removed on clear
+- On download only for selected students is a spiderdiagram created
+
+## Version: 0.1.4
+- Splashscreen added
+
+## Version: 0.1.5
+- Version indicator added
+- Whats new added
+- Export/Import styles and types added
+- Fix clear all not working when no students selected
+- Fix download all not working when no students selected
+`
+export class Header extends Component {
 
   constructor() {
     super()
     this.state = {
       styleEditOpen: false,
       typeEditOpen: false,
+      whatsnewOpen: false,
       new: false,
     }
   }
@@ -25,10 +42,13 @@ export class Options extends Component {
       style={{
         padding: '5px 10px',
         background: '#eee',
-        borderBottom: 'solid 2px #ccc'
+        borderBottom: 'solid 2px #ccc',
+        justifyContent: 'stretch'
       }}>
       <div className="flexColumns">
-        <Label>Style</Label>
+        <div style={{ margin: 'auto 5px auto 0' }}>
+          <Label>Style</Label>
+        </div>
         <ComboBox
           defaultSelectedKey={0}
           selectedKey={this.props.items.styleKey}
@@ -92,7 +112,9 @@ export class Options extends Component {
         </Dialog>
       </div>
       <div className="flexColumns">
-        <Label>Type</Label>
+        <div style={{ margin: 'auto 5px auto 30px' }}>
+          <Label>Type</Label>
+        </div>
         <ComboBox
           defaultSelectedKey={0}
           selectedKey={this.props.items.typeKey}
@@ -122,7 +144,7 @@ export class Options extends Component {
             this.setState({ typeEditOpen: true })
             this.setState({ new: true })
           }} />
- <IconButton
+        <IconButton
           iconProps={{ iconName: 'Delete' }}
           title='Delete this Type'
           ariaLabel='Delete this Type'
@@ -154,6 +176,13 @@ export class Options extends Component {
             <DefaultButton onClick={() => this.setState({ deleteTypeHidden: true })} text="No" />
           </DialogFooter>
         </Dialog>
+      </div>
+      <div className="flexColumns">
+        <DefaultButton>Import</DefaultButton>
+        <DefaultButton>Export</DefaultButton>
+      </div>
+      <div className="flexColumns" style={{ margin: 'auto 0 auto auto' }}>
+        <a className='version' href='#' onClick={() => this.setState({whatsnewOpen: true})}>Version: {this.props.version}</a>
       </div>
       <Panel
         hasCloseButton={false}
@@ -189,6 +218,27 @@ export class Options extends Component {
             }
           }}></EditType>
       </Panel>
+      <Dialog minWidth = '50%'
+          hidden={!this.state.whatsnewOpen}
+          onDismiss={() => this.setState({whatsnewOpen: false})}
+          dialogContentProps={{
+            type: DialogType.largeHeader,
+            title: 'What\'s new',
+            subText:
+              ''
+          }}
+          modalProps={{
+            isBlocking: false,
+            containerClassName: 'ms-dialogMainOverride'
+          }}
+        >
+        <div>
+          <ReactMarkdown source={whatsNew}/>
+        </div>
+          <DialogFooter>
+            <DefaultButton onClick={() => this.setState({whatsnewOpen: false})} text="Dismiss" />
+          </DialogFooter>
+          </Dialog>
     </div>
   }
 

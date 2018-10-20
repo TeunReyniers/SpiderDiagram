@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import logo from './logo.svg'
 import './App.css'
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
-import { Options } from './components/Options'
+import { Header } from './components/Header'
 import { Students } from './components/Students'
 import { Group } from './components/Group'
 import { RenderOptions } from './components/RenderOptions'
@@ -10,17 +9,18 @@ import ReactResizeDetector from 'react-resize-detector'
 import { RenderCanvas } from './logic/RenderSpinDiagramCanvas.js'
 import { ComboBox } from 'office-ui-fabric-react/lib/ComboBox'
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button'
+import packageJson from '../package.json'
 
+const appVersion = packageJson.version
 const electron = window.require('electron');
-var http = require('http');
 var fs = electron.remote.require('fs');
 var path = require('path');
 const Store = require('./logic/Store.js')
 var JSZip = require("jszip");
-
 var elerem = electron.remote;
 var dialog = elerem.dialog;
 var app = elerem.app;
+
 
 initializeIcons()
 
@@ -227,41 +227,48 @@ class App extends Component {
     return (
       <div className="App FullScreen flexRows">
         <div>
-          <Options items={this.state}
+          <Header items={this.state}
+            version={appVersion}
             onChange={(c, e) => {
-              if (c == 'StyleAdded') {
-                let array = this.state.styles.map(s => s)
-                array.push({ key: Math.max(...this.state.styles.map(s => s.key)) + 1, name: e.name, style: e.style })
+              if (c === 'StyleAdded') {
+                let array = [
+                  ...this.state.styles.map(s => s),
+                  {
+                    key: Math.max(...this.state.styles.map(s => s.key)) + 1,
+                    name: e.name,
+                    style: e.style
+                  }]
                 this.setState({ styles: array })
                 styleStore.set('styles', array)
-              } else if (c == 'StyleEdited') {
-                let array = this.state.styles.filter(s => s.key != e.key)
-                array.push(e)
+              } else if (c === 'StyleEdited') {
+                let array = [
+                  ...this.state.styles.filter(s => s.key !== e.key), e]
                 this.setState({ styles: array })
                 styleStore.set('styles', array)
-              } else if (c == 'StyleDeleted') {
+              } else if (c === 'StyleDeleted') {
                 let array = this.state.styles.filter(s => s.key !== e.key)
                 if (e.key !== 0) {
                   this.setState({ styles: array, styleKey: 0 })
                   styleStore.set('styles', array)
                 }
-              } else if (c == 'TypeAdded') {
-                let array = this.state.types.map(s => s)
-                array.push({ key: Math.max(...this.state.types.map(s => s.key)) + 1, name: e.name, type: e.type })
+              } else if (c === 'TypeAdded') {
+                let array = [
+                  ...this.state.types.map(s => s), {
+                    key: Math.max(...this.state.types.map(s => s.key)) + 1,
+                    name: e.name,
+                    type: e.type
+                  }]
                 this.setState({ types: array })
                 typeStore.set('types', array)
-              } else if (c == 'TypeEdited') {
-                let array = this.state.types.filter(s => s.key != e.key)
-                array.push(e)
+              } else if (c === 'TypeEdited') {
+                let array = [
+                  ...this.state.types.filter(s => s.key !== e.key), e]
                 this.setState({ types: array })
                 typeStore.set('types', array)
-              } else if (c == 'TypeDeleted') {
+              } else if (c === 'TypeDeleted') {
                 let array = this.state.types.filter(s => s.key !== e.key)
                 if (e.key !== 0) {
-                  this.setState({
-                    types: array,
-                    typeKey: 0
-                  })
+                  this.setState({ types: array, typeKey: 0 })
                   typeStore.set('types', array)
                 }
               }
@@ -269,7 +276,7 @@ class App extends Component {
             onSelectionChange={(s, t) => {
               this.setState({ styleKey: s, typeKey: t })
               this._renderCanvas(undefined, { style: s, type: t }, undefined)
-            }}></Options>
+            }}/>
         </div>
         <div className='flexColumns' style={{
           flex: 1,
@@ -304,11 +311,15 @@ class App extends Component {
                   }}
                   onChange={(c, l) => {
                     if (c === 'Clear') {
-                      this.setState({ 'students': this.state.students.filter(s=>!s.isSelected)})
+                      this.setState({
+                        'students': this.state.students.filter(s => s.isSelected).length !== 0
+                          ? this.state.students.filter(s => !s.isSelected)
+                          : []
+                      })
                     } else if (c === 'Add') {
                       this._addStudents(l)
                     }
-                  }} 
+                  }}
                   onDownload={
                     () => {
                       this._myUrlSaveAs()
@@ -393,7 +404,7 @@ class App extends Component {
     let index = this.state.students.length === 0 ? 0 : Math.max(this.state.students.map(s => s.key)) + 1
     let students = []
     ltext.split('\n').forEach(l => {
-      if (l != "") {
+      if (l !== "") {
         let student = { name: "", key: index, text: '', scores: [] }
         index = index + 1
         let first = true
@@ -445,7 +456,7 @@ class App extends Component {
     const index = this.state.selectedStudent ? this.state.selectedStudent.key : 0
     for (let q = 0; q < this.state.students.length; q++) {
 
-      if (!this.state.students[q].isSelected) continue
+      if (!this.state.students[q].isSelected && this.students.filter(s => s.isSelected).length !== 0) continue
       this._renderCanvasFinal(undefined, undefined, this.state.students[q])
       const canvas = document.getElementById("MainCanvas");
       const ctx = canvas.getContext("2d");
