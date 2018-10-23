@@ -178,8 +178,25 @@ export class Header extends Component {
         </Dialog>
       </div>
       <div className="flexColumns">
-        <DefaultButton>Import</DefaultButton>
-        <DefaultButton>Export</DefaultButton>
+      <DefaultButton
+          id="ContextualMenuBasicExample"
+          text="More"
+          menuProps={{
+            shouldFocusOnMount: true,
+            items: [
+              {
+                key: 'Import',
+                text: 'Import',
+                onClick: () => console.log('New clicked')
+              },
+              {
+                key: 'Export',
+                text: 'Export',
+                onClick: () => console.log('New clicked')
+              },
+            ]
+          }}
+        />
       </div>
       <div className="flexColumns" style={{ margin: 'auto 0 auto auto' }}>
         <a className='version' href='#' onClick={() => this.setState({whatsnewOpen: true})}>Version: {this.props.version}</a>
