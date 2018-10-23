@@ -14,3 +14,4 @@
 - Export/Import styles and types added
 - Fix clear all not working when no students selected
 - Fix download all not working when no students selected
+- Performance improvements

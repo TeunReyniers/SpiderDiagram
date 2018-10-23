@@ -7,7 +7,7 @@ import { EditStyle } from './EditStyle'
 import { EditType } from './EditType'
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
 const ReactMarkdown = require('react-markdown')
-const whatsNew  = `
+const whatsNew = `
 ## Version: 0.1.2
 - First release
 
@@ -178,7 +178,7 @@ export class Header extends Component {
         </Dialog>
       </div>
       <div className="flexColumns">
-      <DefaultButton
+        <DefaultButton
           id="ContextualMenuBasicExample"
           text="More"
           menuProps={{
@@ -187,19 +187,19 @@ export class Header extends Component {
               {
                 key: 'Import',
                 text: 'Import',
-                onClick: () => console.log('New clicked')
+                onClick: () =>this.props.onImport()
               },
               {
                 key: 'Export',
                 text: 'Export',
-                onClick: () => console.log('New clicked')
+                onClick: () => this.props.onExport(),
               },
             ]
           }}
         />
       </div>
       <div className="flexColumns" style={{ margin: 'auto 0 auto auto' }}>
-        <a className='version' href='#' onClick={() => this.setState({whatsnewOpen: true})}>Version: {this.props.version}</a>
+        <a className='version' href='#' onClick={() => this.setState({ whatsnewOpen: true })}>Version: {this.props.version}</a>
       </div>
       <Panel
         hasCloseButton={false}
@@ -235,27 +235,27 @@ export class Header extends Component {
             }
           }}></EditType>
       </Panel>
-      <Dialog minWidth = '50%'
-          hidden={!this.state.whatsnewOpen}
-          onDismiss={() => this.setState({whatsnewOpen: false})}
-          dialogContentProps={{
-            type: DialogType.largeHeader,
-            title: 'What\'s new',
-            subText:
-              ''
-          }}
-          modalProps={{
-            isBlocking: false,
-            containerClassName: 'ms-dialogMainOverride'
-          }}
-        >
+      <Dialog minWidth='50%'
+        hidden={!this.state.whatsnewOpen}
+        onDismiss={() => this.setState({ whatsnewOpen: false })}
+        dialogContentProps={{
+          type: DialogType.largeHeader,
+          title: 'What\'s new',
+          subText:
+            ''
+        }}
+        modalProps={{
+          isBlocking: false,
+          containerClassName: 'ms-dialogMainOverride'
+        }}
+      >
         <div>
-          <ReactMarkdown source={whatsNew}/>
+          <ReactMarkdown source={whatsNew} />
         </div>
-          <DialogFooter>
-            <DefaultButton onClick={() => this.setState({whatsnewOpen: false})} text="Dismiss" />
-          </DialogFooter>
-          </Dialog>
+        <DialogFooter>
+          <DefaultButton onClick={() => this.setState({ whatsnewOpen: false })} text="Dismiss" />
+        </DialogFooter>
+      </Dialog>
     </div>
   }
 

@@ -8,8 +8,14 @@ import { RenderOptions } from './components/RenderOptions'
 import ReactResizeDetector from 'react-resize-detector'
 import { RenderCanvas } from './logic/RenderSpinDiagramCanvas.js'
 import { ComboBox } from 'office-ui-fabric-react/lib/ComboBox'
-import { DefaultButton } from 'office-ui-fabric-react/lib/Button'
+import { DefaultButton, PrimaryButton } from 'office-ui-fabric-react/lib/Button'
 import packageJson from '../package.json'
+import { Label } from 'office-ui-fabric-react/lib/Label'
+import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
+import { List } from 'office-ui-fabric-react/lib/List';
+import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
+import { TextField } from 'office-ui-fabric-react/lib/TextField'
+import { ThemeSettingName } from '@uifabric/styling';
 
 const appVersion = packageJson.version
 const electron = window.require('electron');
@@ -151,7 +157,9 @@ const typeStore = new Store({
     defaultTypeKey: 0,
     types: [
       {
-        key: 0, name: 'Default', type: {
+        key: 0, 
+        name: 'Default', 
+        type: {
           title: "Wiskunde - getallenleer",
           sectors: [
             {
@@ -214,13 +222,23 @@ class App extends Component {
           key: 1
         }
       ],
-      styleKey: 0,
-      typeKey: 0,
+      styleKey: 0, //styleStore.get('defaultStyleKey'),
+      typeKey: 0,  // typeStore.get('defaultTypeKey'),
+      exportWindowVisible: false,
+      importWindowVisible: false,
+      exportTypes: [],
+      exportStyles: [],
+      importJson: {},
+      importNamePrefix: ''
     }
 
     this._renderCanvas = this._renderCanvas.bind(this)
     this._addStudents = this._addStudents.bind(this)
     this._downloadAll = this._downloadAll.bind(this)
+    this._renderCheckboxCellStyle = this._renderCheckboxCellStyle.bind(this)
+    this._renderCheckboxCellType = this._renderCheckboxCellType.bind(this)
+    this._renderCheckboxCellStyleImport = this._renderCheckboxCellStyleImport.bind(this)
+    this._renderCheckboxCellTypeImport = this._renderCheckboxCellTypeImport.bind(this)
   }
 
   render() {
@@ -274,9 +292,32 @@ class App extends Component {
               }
             }}
             onSelectionChange={(s, t) => {
+              styleStore.set('defaultStyleKey', s)
+              typeStore.set('defaultTypeKey', t)
               this.setState({ styleKey: s, typeKey: t })
               this._renderCanvas(undefined, { style: s, type: t }, undefined)
-            }}/>
+            }}
+            onExport={() => {
+              this.setState({
+                exportWindowVisible: true,
+                exportStyles: [],
+                exportTypes: []
+              })
+            }}
+            onImport={() => {
+              var toLocalPath = app.getPath("desktop")
+              let userChosenPath = dialog.showOpenDialog({ defaultPath: toLocalPath })
+
+              if (userChosenPath && userChosenPath[0]) {
+                const json = fs.readFileSync(userChosenPath[0])
+                this.setState({
+                  exportStyles: [],
+                  exportTypes: [],
+                  importWindowVisible: true,
+                  importJson: JSON.parse(json)
+                })
+              }
+            }} />
         </div>
         <div className='flexColumns' style={{
           flex: 1,
@@ -363,9 +404,191 @@ class App extends Component {
             <ReactResizeDetector handleWidth handleHeight onResize={() => this._renderCanvas(undefined, undefined, undefined)} />
           </div>
         </div>
+        <Dialog minWidth='500px'
+          hidden={!this.state.exportWindowVisible}
+          onDismiss={() => this.setState({ exportWindowVisible: false })}
+          dialogContentProps={{
+            type: DialogType.largeHeader,
+            title: 'Export',
+            subText:
+              ''
+          }}
+          modalProps={{
+            isBlocking: false,
+            containerClassName: 'ms-dialogMainOverride'
+          }}
+        >
+          <div className='flexColumns' style={{ flexGrow: 'stretch' }}>
+            <div style={{ margin: '10px' }}>
+              <Label>Styles</Label>
+              <List items={this.state.styles.sort(this._compareStudents)} onRenderCell={this._renderCheckboxCellStyle} />
+            </div>
+            <div style={{ margin: '10px' }}>
+              <Label>Types</Label>
+              <List items={this.state.types.sort(this._compareStudents)} onRenderCell={this._renderCheckboxCellType} />
+            </div>
+          </div>
+          <DialogFooter>
+            <DefaultButton onClick={() => this.setState({ exportWindowVisible: false })} text="Cancel" />
+            <PrimaryButton onClick={() => {
+              var toLocalPath = path.resolve(app.getPath("desktop"), 'export.json')
+              let userChosenPath = dialog.showSaveDialog({ defaultPath: toLocalPath })
+
+              if (userChosenPath) {
+                let content = {
+                  styles: this.state.styles.filter(
+                    s => this.state.exportStyles.includes(s.key)),
+                  types: this.state.types.filter(
+                    s => this.state.exportTypes.includes(s.key)),
+                }
+                fs.writeFileSync(userChosenPath, JSON.stringify(content));
+                this.setState({ exportWindowVisible: false })
+              }
+            }}
+              text="Export" />
+          </DialogFooter>
+        </Dialog>
+        <Dialog minWidth='500px'
+          hidden={!this.state.importWindowVisible}
+          onDismiss={() => this.setState({ importWindowVisible: false })}
+          dialogContentProps={{
+            type: DialogType.largeHeader,
+            title: 'Import',
+            subText:
+              ''
+          }}
+          modalProps={{
+            isBlocking: false,
+            containerClassName: 'ms-dialogMainOverride'
+          }}
+        >
+          <div>
+            <TextField label='Name prefix'
+              value={this.state.importNamePrefix}
+              onChange={(e, s) => this.setState({ importNamePrefix: s })} />
+            <div className='flexColumns' style={{ flexGrow: 'stretch' }}>
+              <div style={{ margin: '10px' }}>
+                <Label>Styles</Label>
+                <List items={this.state.importJson && this.state.importJson.styles && this.state.importJson.styles.sort(this._compareStudents)}
+                  onRenderCell={this._renderCheckboxCellStyleImport} />
+              </div>
+              <div style={{ margin: '10px' }}>
+                <Label>Types</Label>
+                <List items={this.state.importJson && this.state.importJson.types && this.state.importJson.types.sort(this._compareStudents)}
+                  onRenderCell={this._renderCheckboxCellTypeImport} />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <DefaultButton onClick={() => this.setState({ importWindowVisible: false })}
+              text="Cancel" />
+            <PrimaryButton onClick={() => {
+
+              let styleKey = Math.max(...this.state.styles.map(s => s.key)) + 1
+              const styles = this.state.exportStyles.map(s => {
+                let style = this.state.importJson.styles.filter(e => e.key === s)[0]
+                style.key = styleKey
+                style.name = this.state.importNamePrefix !== ''
+                  ? this.state.importNamePrefix + '-' + style.name
+                  : style.name
+                styleKey = styleKey + 1
+                return style
+              })
+
+              let typeKey = Math.max(...this.state.types.map(s => s.key)) + 1
+              const types = this.state.exportTypes.map(s => {
+                let type = this.state.importJson.types.filter(e => e.key === s)[0]
+                type.key = typeKey
+                type.name = this.state.importNamePrefix !== ''
+                  ? this.state.importNamePrefix + '-' + type.name
+                  : type.name
+                typeKey = typeKey + 1
+                return type
+              })
+
+              styleStore.set('styles', [...this.state.styles, ...styles])
+              typeStore.set('types', [...this.state.types, ...types])
+
+              this.setState({
+                styles: [...this.state.styles, ...styles],
+                types: [...this.state.types, ...types],
+                importWindowVisible: false
+              })
+
+            }}
+              text="Import" />
+          </DialogFooter>
+        </Dialog>
       </div >
     )
   }
+
+  _compareStudents(a, b) {
+    if (a.name < b.name)
+      return -1;
+    if (a.name > b.name)
+      return 1;
+    return 0;
+  }
+
+  _renderCheckboxCellStyle(item, index) {
+    return (
+      <div style={{ padding: '10px', background: index % 2 === 0 ? '#ddd' : '#eee' }} >
+        <Checkbox isSelected={item.isSelected}
+          label={item.name}
+          onChange={(e, b) => {
+            b
+              ? this.setState({ exportStyles: [...this.state.exportStyles, item.key] })
+              : this.setState({ exportStyles: this.state.exportStyles.filter(s => s !== item.key) })
+          }} />
+      </div>
+    );
+  }
+
+  _renderCheckboxCellType(item, index) {
+    return (
+      <div style={{ padding: '10px', background: index % 2 === 0 ? '#ddd' : '#eee' }} >
+        <Checkbox isSelected={item.isSelected}
+          label={item.name}
+          onChange={(e, b) => {
+            b
+              ? this.setState({ exportTypes: [...this.state.exportTypes, item.key] })
+              : this.setState({ exportTypes: this.state.exportTypes.filter(s => s !== item.key) })
+          }} />
+      </div>
+    );
+  }
+
+  _renderCheckboxCellStyleImport(item, index) {
+    return (
+      <div style={{ padding: '10px', background: index % 2 === 0 ? '#ddd' : '#eee' }} >
+        <Checkbox isSelected={item.isSelected}
+          label={item.name}
+          onChange={(e, b) => {
+            b
+              ? this.setState({ exportStyles: [...this.state.exportStyles, item.key] })
+              : this.setState({ exportStyles: this.state.exportStyles.filter(s => s !== item.key) })
+          }} />
+      </div>
+    );
+  }
+
+  _renderCheckboxCellTypeImport(item, index) {
+    return (
+      <div style={{ padding: '10px', background: index % 2 === 0 ? '#ddd' : '#eee' }} >
+        <Checkbox isSelected={item.isSelected}
+          label={item.name}
+          onChange={(e, b) => {
+            b
+              ? this.setState({ exportTypes: [...this.state.exportTypes, item.key] })
+              : this.setState({ exportTypes: this.state.exportTypes.filter(s => s !== item.key) })
+          }} />
+      </div>
+    );
+  }
+
+
+
 
   _basicComboBoxComponentRef = (component) => {
     this._basicCombobox = component
