@@ -16,15 +16,36 @@ import { List } from 'office-ui-fabric-react/lib/List'
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox'
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
 
-const appVersion = packageJson.version
+var lru = require('lru-cache')({max: 256, maxAge: 250/*ms*/});
+
+
 const electron = window.require('electron');
 var fs = electron.remote.require('fs');
+
+
+var origLstat = fs.lstatSync.bind(fs);
+
+// NB: The biggest offender of thrashing lstatSync is the node module system
+// itself, which we can't get into via any sane means.
+require('fs').lstatSync = function(p) {
+  let r = lru.get(p);
+  if (r) return r;
+
+  r = origLstat(p);
+  lru.set(p, r);
+  return r;
+};
+
+
+const appVersion = packageJson.version
+
 var path = require('path');
 const Store = require('./logic/Store.js')
 var JSZip = require("jszip");
 var elerem = electron.remote;
 var dialog = elerem.dialog;
 var app = elerem.app;
+
 
 
 initializeIcons()

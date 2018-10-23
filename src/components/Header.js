@@ -25,6 +25,12 @@ const whatsNew = `
 - Export/Import styles and types added
 - Fix clear all not working when no students selected
 - Fix download all not working when no students selected
+
+# Version: 0.1.6
+- Changes in which properties belong to style and which to type to make it more usable
+  Sorry for the breaking changes
+- Faster loading speeds
+- UI improvements
 `
 export class Header extends Component {
 
