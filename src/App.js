@@ -678,8 +678,6 @@ class App extends Component {
       if (!this.state.students[q].isSelected && this.students.filter(s => s.isSelected).length !== 0) continue
       this._renderCanvasFinal(undefined, undefined, this.state.students[q])
       const canvas = document.getElementById("MainCanvas");
-      const ctx = canvas.getContext("2d");
-
       var savable = new Image();
       savable.src = canvas.toDataURL();
       zip.file(this.state.students[q].name + ".png", savable.src.substr(savable.src.indexOf(',') + 1), { base64: true })
