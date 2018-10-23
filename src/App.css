@@ -1,3 +1,9 @@
+*{
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
 .FullScreen{
   position: absolute;
   top: 0px; 
@@ -27,3 +33,19 @@
   flex-direction: column;
 }
 
+.version {
+  text-decoration: none;
+  color: #555;
+  font-size: .9em;
+ font-weight: bold
+}
+
+.version:hover {
+  text-decoration: underline;
+  color: #222;
+}
+
+.version:active {
+  text-decoration: underline;
+  color: #555;
+}

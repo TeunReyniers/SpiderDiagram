@@ -15,7 +15,6 @@ class Store {
     this.path = path.join(userDataPath, opts.configName + '.json');
 
     this.data = parseDataFile(this.path, opts.defaults);
-    console.log(this.data);
   }
 
   // This will just return the property on the `data` object
@@ -30,8 +29,6 @@ class Store {
     // We're not writing a server so there's not nearly the same IO demand on the process
     // Also if we used an async API and our app was quit before the asynchronous write had a chance to complete,
     // we might lose that data. Note that in a real app, we would try/catch this.
-    console.log(this.data);
-
     fs.writeFileSync(this.path, JSON.stringify(this.data));
   }
 }

@@ -5,9 +5,6 @@ import { JsonEditor as Editor } from 'jsoneditor-react'
 import { RenderCanvas } from '../logic/RenderSpinDiagramCanvas.js'
 import 'jsoneditor-react/es/editor.min.css'
 import ReactResizeDetector from 'react-resize-detector'
-import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
-
-
 
 export class EditStyle extends Component {
     constructor() {
@@ -163,11 +160,9 @@ export class EditStyle extends Component {
                     </div>
                     <div>
                         <PrimaryButton onClick={() => {
-                            if (this._getErrorMessage(this.state.name) == "") {
+                            if (this._getErrorMessage(this.state.name) === "") {
                                 this.props.onSave(this.state.key, this.state.name, this.state.style)
                             }
-                            console.log(this.state.name)
-
                         }}>Save</PrimaryButton>
                         <DefaultButton onClick={() => { this.props.onCancel() }}>Cancel</DefaultButton>
                     </div>
