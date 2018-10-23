@@ -1,6 +1,4 @@
-
 import React, { Component } from 'react';
-
 import { Label } from 'office-ui-fabric-react/lib/Label'
 import { IconButton } from "office-ui-fabric-react/lib/Button";
 
@@ -9,7 +7,6 @@ export class Group extends Component {
         super()
 
         this.state = { collapsed: false }
-
         this._switch = this._switch.bind(this)
     }
 

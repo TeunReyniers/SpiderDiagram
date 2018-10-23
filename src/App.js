@@ -12,10 +12,9 @@ import { DefaultButton, PrimaryButton } from 'office-ui-fabric-react/lib/Button'
 import packageJson from '../package.json'
 import { Label } from 'office-ui-fabric-react/lib/Label'
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
-import { List } from 'office-ui-fabric-react/lib/List';
-import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
+import { List } from 'office-ui-fabric-react/lib/List'
+import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox'
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
-import { ThemeSettingName } from '@uifabric/styling';
 
 const appVersion = packageJson.version
 const electron = window.require('electron');
@@ -379,7 +378,6 @@ class App extends Component {
                 }
               }>Previous</DefaultButton>
               <ComboBox
-                defaultSelectedKey={this.state.students.length > 0 ? this.state.students[0].key : undefined}
                 selectedKey={this.state.selectedStudent && this.state.selectedStudent.key}
                 id="StudentDropDown"
                 ariaLabel="Student selector"
@@ -612,11 +610,9 @@ class App extends Component {
 
   _renderCanvasFinal(c, b, l) {
     const students = l ? l : this.state.selectedStudent
-    const viewScale = c ? c.viewScale : this.state.settings.viewScale
     const width = c ? c.width : this.state.settings.width
     const style = this.state.styles.filter(s => s.key === (b ? b.style : this.state.styleKey))[0]
     const type = this.state.types.filter(s => s.key === (b ? b.type : this.state.typeKey))[0]
-    const wrapper = document.getElementById('MainCanvasWrapper')
     students && RenderCanvas.drawCanvas({
       format: style.style,
       layout: type.type

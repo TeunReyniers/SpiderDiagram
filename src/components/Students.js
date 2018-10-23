@@ -1,13 +1,8 @@
-
-import React, { Component } from 'react';
-
-import { List } from 'office-ui-fabric-react/lib/List';
-import { Label } from 'office-ui-fabric-react/lib/Label'
-import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
+import React, { Component } from 'react'
+import { List } from 'office-ui-fabric-react/lib/List'
+import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox'
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
-import { Slider } from 'office-ui-fabric-react/lib/Slider';
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
-import { Panel } from "office-ui-fabric-react/lib/Panel";
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
 
 export class Students extends Component {
@@ -87,7 +82,7 @@ export class Students extends Component {
     }
 
     _formatText(text) {
-        if (text.substr(0, 1) == '"') {
+        if (text.substr(0, 1) === '"') {
             return text.substr(1, text.length)
         }
         return text

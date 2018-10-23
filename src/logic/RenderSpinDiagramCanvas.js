@@ -1,7 +1,7 @@
 export class RenderCanvas {
 
     static formatText(text) {
-        if (text.substr(0, 1) == '"') {
+        if (text.substr(0, 1) === '"') {
             return text.substr(1, text.length)
         }
         return text
@@ -34,14 +34,13 @@ export class RenderCanvas {
         //pie parts 
         let index = 0
         student.scores.forEach(score => {
-            if (data.format.fillmode == "piece") {
+            if (data.format.fillmode === "piece") {
                 const grade = data.layout.grades[Math.min(score, data.layout.grades.length - 1)]
                 this.DrawPiePartPartArea(ctx, 0, grade.width * scale * diagram.radius / 10,
                     center, index * 360 / partCount, (index + 1) * 360 / partCount, grade.color)
 
             } else {
                 let previousRadius = 0
-                console.log(score);
                 for (let si = 0; si <= score; si++) {
                     let grade = data.layout.grades[Math.min(si, data.layout.grades.length - 1)]
                     this.DrawPiePartPartArea(ctx, previousRadius * scale * diagram.radius / 10,
@@ -268,7 +267,7 @@ export class RenderCanvas {
 
         if (!text.smartRotate) return angle + text.rotation
 
-        if (text.smartRotateDirection == 'vertical') {
+        if (text.smartRotateDirection === 'vertical') {
             if (offset.Y > 0) return angle + text.rotation + (invert ? 0 : 180)
         } else {
             if (offset.X > 0) return angle + text.rotation + (invert ? 0 : 180)
@@ -282,7 +281,7 @@ export class RenderCanvas {
 
         if (!text.smartRotate) return false
 
-        if (text.smartRotateDirection == 'vertical') {
+        if (text.smartRotateDirection === 'vertical') {
             if (offset.Y > 0) return true
         } else {
             if (offset.X > 0) return true

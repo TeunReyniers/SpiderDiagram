@@ -7,6 +7,7 @@ import { EditStyle } from './EditStyle'
 import { EditType } from './EditType'
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
 const ReactMarkdown = require('react-markdown')
+
 const whatsNew = `
 ## Version: 0.1.2
 - First release
@@ -50,7 +51,6 @@ export class Header extends Component {
           <Label>Style</Label>
         </div>
         <ComboBox
-          defaultSelectedKey={0}
           selectedKey={this.props.items.styleKey}
           id="StyleDropDown"
           ariaLabel="Style selector"
@@ -116,7 +116,6 @@ export class Header extends Component {
           <Label>Type</Label>
         </div>
         <ComboBox
-          defaultSelectedKey={0}
           selectedKey={this.props.items.typeKey}
           id="TypeDropDown"
           ariaLabel="Type selector"
