@@ -378,11 +378,13 @@ class App extends Component {
                   }}
                   onChange={(c, l) => {
                     if (c === 'Clear') {
-                      const students = this.state.students.filter(s => !s.isSelected)
-                      const selectedStudent = Math.min(students.map(s=>s.key))
+                      const totalStudents = this.state.students.length
+                      const selectedStudents = this.state.students.filter(s => !s.isSelected)
+                      const students = selectedStudents.length === totalStudents ? [] : selectedStudents        
+                      const selectedStudent = Math.min(students.map(s=>s.key))            
                       this.setState({ 'students': students, selectedStudent: selectedStudent })
-                      if(students.length ===0){
-                        this._renderCanvas(undefined,undefined,false)
+                      if(students.length === 0){
+                        this._renderCanvas(undefined,undefined,'false')
                       }else{
                         this._renderCanvas(undefined, undefined, this.state.students.filter(s=>s.key === selectedStudent)[0])
                       }

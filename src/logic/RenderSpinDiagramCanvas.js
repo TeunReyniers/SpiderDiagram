@@ -36,7 +36,7 @@ export class RenderCanvas {
         var ctx = canvas.getContext("2d");
         //ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 
-        if (student === undefined || student === false) {
+        if (student === undefined || student === 'false' || student.scores === undefined) {
             this.DrawText(ctx, 'No student selected', center,  '20px Arial',  'center',  0, 'black')
             return
         }
