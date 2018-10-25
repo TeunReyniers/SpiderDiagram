@@ -16,7 +16,7 @@ import { List } from 'office-ui-fabric-react/lib/List'
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox'
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
 
-var lru = require('lru-cache')({max: 256, maxAge: 250/*ms*/});
+var lru = require('lru-cache')({ max: 256, maxAge: 250/*ms*/ });
 
 
 const electron = window.require('electron');
@@ -27,7 +27,7 @@ var origLstat = fs.lstatSync.bind(fs);
 
 // NB: The biggest offender of thrashing lstatSync is the node module system
 // itself, which we can't get into via any sane means.
-require('fs').lstatSync = function(p) {
+require('fs').lstatSync = function (p) {
   let r = lru.get(p);
   if (r) return r;
 
@@ -183,8 +183,8 @@ const typeStore = new Store({
     defaultTypeKey: 0,
     types: [
       {
-        key: 0, 
-        name: 'Default', 
+        key: 0,
+        name: 'Default',
         type: {
           title: "Wiskunde - getallenleer",
           sectors: [
@@ -378,11 +378,14 @@ class App extends Component {
                   }}
                   onChange={(c, l) => {
                     if (c === 'Clear') {
-                      this.setState({
-                        'students': this.state.students.filter(s => s.isSelected).length !== 0
-                          ? this.state.students.filter(s => !s.isSelected)
-                          : []
-                      })
+                      const students = this.state.students.filter(s => !s.isSelected)
+                      const selectedStudent = Math.min(students.map(s=>s.key))
+                      this.setState({ 'students': students, selectedStudent: selectedStudent })
+                      if(students.length ===0){
+                        this._renderCanvas(undefined,undefined,false)
+                      }else{
+                        this._renderCanvas(undefined, undefined, this.state.students.filter(s=>s.key === selectedStudent)[0])
+                      }
                     } else if (c === 'Add') {
                       this._addStudents(l)
                     }
@@ -620,16 +623,16 @@ class App extends Component {
   }
 
   _renderCanvas(c, b, l) {
-    const students = l ? l : this.state.selectedStudent
+    const student = l ? l : this.state.selectedStudent
     const viewScale = c ? c.viewScale : this.state.settings.viewScale
     const width = c ? c.width : this.state.settings.width
     const style = this.state.styles.filter(s => s.key === (b ? b.style : this.state.styleKey))[0]
     const type = this.state.types.filter(s => s.key === (b ? b.type : this.state.typeKey))[0]
     const wrapper = document.getElementById('MainCanvasWrapper')
-    students && RenderCanvas.drawCanvas({
+    RenderCanvas.drawCanvas({
       style: style.style,
       type: type.type
-    }, 'MainCanvas', students,
+    }, 'MainCanvas', student,
       viewScale < 5
         ? Math.min(Math.min(wrapper.offsetWidth * 0.9, wrapper.offsetHeight * 0.9 / style.style.ratio), width)
         : viewScale * width / 100)

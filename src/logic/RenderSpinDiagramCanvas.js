@@ -1,3 +1,5 @@
+import { Students } from "../components/Students";
+
 export class RenderCanvas {
 
     static formatText(text) {
@@ -7,14 +9,15 @@ export class RenderCanvas {
         return text
     }
 
+
     static drawCanvas(data, canvasId, student, width) {
 
-        data.style.grades =  data.style.grades ||  [
+        data.style.grades = data.style.grades || [
             { name: "Onvoldoende", width: 3, color: '#3b8686' },
             { name: "Voldoende", width: 6, color: '#79bd9a' },
             { name: "Goed", width: 9, color: '#a8dba8' },
             { name: "Stoppen met werken", width: 10, color: '#cff09e' },
-          ]
+        ]
 
         const scale = width / 200;
         const lineScale = scale / 3
@@ -23,7 +26,6 @@ export class RenderCanvas {
         const diagram = data.style.diagram
 
         let canvas = document.getElementById(canvasId);
-
 
         canvas.setAttribute('width', width);
         canvas.setAttribute('height', width * data.style.ratio);
@@ -34,9 +36,16 @@ export class RenderCanvas {
         var ctx = canvas.getContext("2d");
         //ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 
+        if (student === undefined || student === false) {
+            this.DrawText(ctx, 'No student selected', center,  '20px Arial',  'center',  0, 'black')
+            return
+        }
+
         //Title
         this.DrawTextSmart(ctx, data.type.title, data.style.title, scale, data.style.title.color)
         this.DrawTextSmart(ctx, student.name, data.style.student, scale, data.style.student.color)
+
+        
 
         //pie parts 
         let index = 0
