@@ -164,7 +164,13 @@ const styleStore = new Store({
               rotation: -90,
               alignment: 'left'
             }
-          }
+          },
+          grades: [
+            { name: "Onvoldoende", width: 3, color: '#3b8686' },
+            { name: "Voldoende", width: 6, color: '#79bd9a' },
+            { name: "Goed", width: 9, color: '#a8dba8' },
+            { name: "Stoppen met werken", width: 10, color: '#cff09e' },
+          ]
         }
       },
     },]
@@ -621,8 +627,8 @@ class App extends Component {
     const type = this.state.types.filter(s => s.key === (b ? b.type : this.state.typeKey))[0]
     const wrapper = document.getElementById('MainCanvasWrapper')
     students && RenderCanvas.drawCanvas({
-      format: style.style,
-      layout: type.type
+      style: style.style,
+      type: type.type
     }, 'MainCanvas', students,
       viewScale < 5
         ? Math.min(Math.min(wrapper.offsetWidth * 0.9, wrapper.offsetHeight * 0.9 / style.style.ratio), width)
@@ -635,8 +641,8 @@ class App extends Component {
     const style = this.state.styles.filter(s => s.key === (b ? b.style : this.state.styleKey))[0]
     const type = this.state.types.filter(s => s.key === (b ? b.type : this.state.typeKey))[0]
     students && RenderCanvas.drawCanvas({
-      format: style.style,
-      layout: type.type
+      style: style.style,
+      type: type.type
     }, 'MainCanvas', students, width)
   }
 

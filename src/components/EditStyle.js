@@ -13,10 +13,10 @@ export class EditStyle extends Component {
         this._getErrorMessage = this._getErrorMessage.bind(this)
         this._jsonChanged = this._jsonChanged.bind(this)
         this._renderCanvas = this._renderCanvas.bind(this)
-
     }
 
     componentDidMount() {
+        
         if (!this.props.new) {
             if (this.props.style.style !== undefined) {
                 this.setState({
@@ -153,8 +153,8 @@ export class EditStyle extends Component {
                       ></TextField>
                     <div style={{ height: 'calc(100% - 100px)' }}>
                         <Editor value={this.state.style}
-                            mode='form'
-                            allowedModes={['code', 'form']}
+                            mode='tree'
+                            allowedModes={['code', 'form', 'tree']}
                             htmlElementProps={{ style: { height: '100%' } }}
                             onChange={this._jsonChanged} />
                     </div>
@@ -233,7 +233,7 @@ export class EditStyle extends Component {
         }
 
         const wrapper = document.getElementById('StyleCanvasWrapper')
-        RenderCanvas.drawCanvas({ format: this.state.style, layout: layout }, 'StyleCanvas', { name: "Teun Reyniers", scores: [0, 1, 3, 2, 2, 2, 1, 0, 2, 0, 3] }, Math.min(wrapper.offsetWidth * 0.9, wrapper.offsetHeight * 0.9 / this.state.style.ratio))
+        RenderCanvas.drawCanvas({ style: this.state.style, type: this.props.type.type }, 'StyleCanvas', { name: "Teun Reyniers", scores: [0, 1, 3, 2, 2, 2, 1, 0, 2, 0, 3] }, Math.min(wrapper.offsetWidth * 0.9, wrapper.offsetHeight * 0.9 / this.state.style.ratio))
     }
 
 }

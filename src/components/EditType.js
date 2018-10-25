@@ -17,18 +17,18 @@ export class EditType extends Component {
     }
 
     componentDidMount() {
-
+        const  {grades, ...type} = this.props.type.type
         if (!this.props.new) {
             if (this.props.type.type !== undefined) {
                 this.setState({
-                    type: this.props.type.type,
+                    type: type,
                     name: this.props.type.name,
                     key: this.props.type.key
                 })
             }
         } else {
             this.setState({
-                type: this.props.type.type,
+                type: type,
                 name: this.props.type.name  + '_copy',
                 key: -1
             }) 
@@ -232,7 +232,7 @@ export class EditType extends Component {
         }
 
         const wrapper = document.getElementById('TypeCanvasWrapper')
-        RenderCanvas.drawCanvas({ format: style, layout: this.state.type }, 'TypeCanvas', { name: "Teun Reyniers", scores: [0, 1, 3, 2, 2, 2, 1, 0, 2, 0, 3] }, Math.min(wrapper.offsetWidth * 0.9, wrapper.offsetHeight * 0.9 / style.ratio))
+        RenderCanvas.drawCanvas({ style: this.props.style.style, type: this.state.type }, 'TypeCanvas', { name: "Teun Reyniers", scores: [0, 1, 3, 2, 2, 2, 1, 0, 2, 0, 3] }, Math.min(wrapper.offsetWidth * 0.9, wrapper.offsetHeight * 0.9 / this.props.style.style.ratio))
     }
 
 }

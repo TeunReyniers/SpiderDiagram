@@ -9,40 +9,47 @@ export class RenderCanvas {
 
     static drawCanvas(data, canvasId, student, width) {
 
+        data.style.grades =  data.style.grades ||  [
+            { name: "Onvoldoende", width: 3, color: '#3b8686' },
+            { name: "Voldoende", width: 6, color: '#79bd9a' },
+            { name: "Goed", width: 9, color: '#a8dba8' },
+            { name: "Stoppen met werken", width: 10, color: '#cff09e' },
+          ]
+
         const scale = width / 200;
         const lineScale = scale / 3
-        const center = data.format.diagram.position && this.ScalePoint(scale, data.format.diagram.position) || { X: data.format.canvas_size.width / 2, Y: data.format.canvas_size.height / 2 }
-        const partCount = data.layout.sectors.reduce((c, s) => c + s.parts.length, 0)
-        const diagram = data.format.diagram
+        const center = data.style.diagram.position && this.ScalePoint(scale, data.style.diagram.position) || { X: data.style.canvas_size.width / 2, Y: data.style.canvas_size.height / 2 }
+        const partCount = data.type.sectors.reduce((c, s) => c + s.parts.length, 0)
+        const diagram = data.style.diagram
 
         let canvas = document.getElementById(canvasId);
 
 
         canvas.setAttribute('width', width);
-        canvas.setAttribute('height', width * data.format.ratio);
+        canvas.setAttribute('height', width * data.style.ratio);
         //canvas.width = width;
-        //canvas.height = width * data.format.ratio;
+        //canvas.height = width * data.style.ratio;
         //canvas.style.width = width / window.devicePixelRatio + "px";
-        //canvas.style.height = width * data.format.ratio / window.devicePixelRatio + "px";
+        //canvas.style.height = width * data.style.ratio / window.devicePixelRatio + "px";
         var ctx = canvas.getContext("2d");
         //ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 
         //Title
-        this.DrawTextSmart(ctx, data.layout.title, data.format.title, scale, data.format.title.color)
-        this.DrawTextSmart(ctx, student.name, data.format.student, scale, data.format.student.color)
+        this.DrawTextSmart(ctx, data.type.title, data.style.title, scale, data.style.title.color)
+        this.DrawTextSmart(ctx, student.name, data.style.student, scale, data.style.student.color)
 
         //pie parts 
         let index = 0
         student.scores.forEach(score => {
-            if (data.format.fillmode === "piece") {
-                const grade = data.layout.grades[Math.min(score, data.layout.grades.length - 1)]
+            if (data.style.fillmode === "piece") {
+                const grade = data.style.grades[Math.min(score, data.style.grades.length - 1)]
                 this.DrawPiePartPartArea(ctx, 0, grade.width * scale * diagram.radius / 10,
                     center, index * 360 / partCount, (index + 1) * 360 / partCount, grade.color)
 
             } else {
                 let previousRadius = 0
                 for (let si = 0; si <= score; si++) {
-                    let grade = data.layout.grades[Math.min(si, data.layout.grades.length - 1)]
+                    let grade = data.style.grades[Math.min(si, data.style.grades.length - 1)]
                     this.DrawPiePartPartArea(ctx, previousRadius * scale * diagram.radius / 10,
                         grade.width * scale * diagram.radius / 10, center,
                         index * 360 / partCount, (index + 1) * 360 / partCount, grade.color)
@@ -55,7 +62,7 @@ export class RenderCanvas {
 
         //circles
         let previousRadius = 0
-        data.layout.grades.forEach(grade => {
+        data.style.grades.forEach(grade => {
             this.DrawCircle(ctx, grade.width * scale * diagram.radius / 10,
                 center, diagram.lines.circles.color, diagram.lines.circles.width * lineScale)
             this.DrawText(ctx, grade.name,
@@ -75,7 +82,7 @@ export class RenderCanvas {
 
         //part lines
         let partNumber = 0
-        data.layout.sectors.forEach(sector => {
+        data.type.sectors.forEach(sector => {
             const angle = partNumber * 360 / partCount + sector.parts.length * 180 / partCount
             const sectorLabelPosition = {
                 X: center.X + Math.cos(this.GetRadians(angle)) * diagram.text.sector.radius * diagram.radius / 10 * scale,
@@ -121,7 +128,7 @@ export class RenderCanvas {
 
         //sector lines
         partNumber = 0
-        data.layout.sectors.forEach(sector => {
+        data.type.sectors.forEach(sector => {
             const angle = partNumber * 360 / partCount
             this.DrawLine(ctx, angle, diagram.lines.sector.length * diagram.radius / 10 * scale,
                 center, diagram.lines.sector.color, diagram.lines.sector.width * lineScale)
@@ -131,7 +138,7 @@ export class RenderCanvas {
 
         //circles text
         previousRadius = 0
-        data.layout.grades.forEach(grade => {
+        data.style.grades.forEach(grade => {
             this.DrawText(ctx, grade.name,
                 {
                     X: center.X + diagram.text.circles.offset.X,

@@ -27,8 +27,9 @@ const whatsNew = `
 - Fix download all not working when no students selected
 
 # Version: 0.1.6
-- Changes in which properties belong to style and which to type to make it more usable
-  Sorry for the breaking changes
+- Changes in which properties belong to style and which to type to make it more usable 
+    - Grades are now listed under style in stead of type
+- When editing a style or type the active type, style is now used to generate the preview 
 - Faster loading speeds
 - UI improvements
 `
@@ -192,7 +193,7 @@ export class Header extends Component {
               {
                 key: 'Import',
                 text: 'Import',
-                onClick: () =>this.props.onImport()
+                onClick: () => this.props.onImport()
               },
               {
                 key: 'Export',
@@ -212,7 +213,8 @@ export class Header extends Component {
         type={PanelType.smallFluid}
         onDismiss={() => this.setState({ styleEditOpen: false })}
         headerText="Edit Style">
-        <EditStyle new={this.state.new} style={this.props.items.styles.filter(s => s.key === this.props.items.styleKey)[0]}
+        <EditStyle new={this.state.new}
+          style={this.props.items.styles.filter(s => s.key === this.props.items.styleKey)[0]}
           onCancel={() => { this.setState({ styleEditOpen: false }) }}
           onSave={(key, name, style) => {
             this.setState({ styleEditOpen: false })
@@ -221,7 +223,8 @@ export class Header extends Component {
             } else {
               this.props.onChange('StyleAdded', { name: name, style: style })
             }
-          }}></EditStyle>
+          }}
+          type={this.props.items.types.filter(s => s.key === this.props.items.typeKey)[0]}></EditStyle>
       </Panel>
       <Panel
         hasCloseButton={false}
@@ -229,7 +232,8 @@ export class Header extends Component {
         type={PanelType.smallFluid}
         onDismiss={() => this.setState({ typeEditOpen: false })}
         headerText="Edit Type">
-        <EditType new={this.state.new} type={this.props.items.types.filter(s => s.key === this.props.items.typeKey)[0]}
+        <EditType new={this.state.new}
+          type={this.props.items.types.filter(s => s.key === this.props.items.typeKey)[0]}
           onCancel={() => { this.setState({ typeEditOpen: false }) }}
           onSave={(key, name, type) => {
             this.setState({ typeEditOpen: false })
@@ -238,7 +242,8 @@ export class Header extends Component {
             } else {
               this.props.onChange('TypeAdded', { name: name, type: type })
             }
-          }}></EditType>
+          }}
+          style={this.props.items.styles.filter(s => s.key === this.props.items.styleKey)[0]}></EditType>
       </Panel>
       <Dialog minWidth='50%'
         hidden={!this.state.whatsnewOpen}
