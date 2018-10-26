@@ -18,7 +18,7 @@
 # Version: 0.1.6
 - Fix clear all not working when no students selected
 - Changes in which properties belong to style and which to type to make it more usable 
-    - Grades are now listed under style in stead of type
+    - Grades are now listed under style in stead ll of type
 - When editing a style or type the active type, style is now used to generate the preview 
 - Select all / deselect all for students
 - Faster loading speeds
