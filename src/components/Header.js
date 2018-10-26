@@ -31,6 +31,7 @@ const whatsNew = `
 - Changes in which properties belong to style and which to type to make it more usable 
     - Grades are now listed under style in stead of type
 - When editing a style or type the active type, style is now used to generate the preview 
+- Select all / deselect all for students
 - Faster loading speeds
 - UI improvements
 `

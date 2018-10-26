@@ -18,6 +18,7 @@ export class Students extends Component {
     render() {
 
         const selectedStudentsCount = this.props.items.filter(s => s.isSelected).length
+        const studentsCount = this.props.items.length
 
         return <div style={{
             background: '#eee',
@@ -29,14 +30,29 @@ export class Students extends Component {
                 <DefaultButton onClick={() => this.props.onChange('Clear', '')}>
                     {selectedStudentsCount === 0 || selectedStudentsCount === this.props.items.length
                         ? 'Clear all'
-                        : `Clear (${selectedStudentsCount})`}
+                        : 'Clear (' + selectedStudentsCount + ')'}
                 </DefaultButton>
                 <PrimaryButton onClick={() => this.props.onDownload()}>
                     {selectedStudentsCount === 0 || selectedStudentsCount === this.props.items.length
                         ? 'Download all'
-                        : `Download (${selectedStudentsCount})`}
+                        : 'Download (' + selectedStudentsCount + ')'}
                 </PrimaryButton>
-                <List items={this.props.items.sort(this._compareStudents)} onRenderCell={this._renderCheckboxCell} />
+                <DefaultButton onClick={(e)=> this.props.onSelectAll() }>Select</DefaultButton>
+                <DefaultButton onClick={(e)=> this.props.onDeselectAll() }>Deselect</DefaultButton>
+                <div style={{ padding: '10px', borderBottom: '2px solid gray' }}>  
+                </div>
+                
+
+     { 
+         
+           this.props.items.sort(this._compareStudents).map((item, index)=> <div style={{ padding: '10px', background: index % 2 === 0 ? '#ddd' : '#eee' }} >
+                <Checkbox isSelected={item.isSelected}
+                    label={item.name}
+                    onChange={(e, b) => { this.props.onSelectionChange(item.key, b) }} />
+            </div>
+        )}
+             {  // <List items={this.props.items.sort(this._compareStudents)} onRenderCell={this._renderCheckboxCell} />
+             }
             </div>
             <Dialog
                 hidden={this.state.hideDialog}

@@ -396,6 +396,26 @@ class App extends Component {
                     () => {
                       this._myUrlSaveAs()
                     }
+                  }
+                  onSelectAll={() =>{
+                    const array = this.state.students.map(s=>{
+                      let ts = s
+                      console.log(s.name)
+                      ts.isSelected = true
+                      return ts
+                    })
+                    console.log(array)
+                    this.setState({students: array})}
+                  }
+                  onDeselectAll={ () =>{
+                    const array = this.state.students.map(s=>{
+                      let ts = s
+                      console.log(s.name)
+                      ts.isSelected = false
+                      return ts
+                    })
+                    console.log(array)
+                    this.setState({students: array})}
                   }></Students>
               </Group>
             </div>
