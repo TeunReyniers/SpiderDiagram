@@ -379,8 +379,8 @@ class App extends Component {
                   onChange={(c, l) => {
                     if (c === 'Clear') {
                       const totalStudents = this.state.students.length
-                      const selectedStudents = this.state.students.filter(s => !s.isSelected)
-                      const students = selectedStudents.length === totalStudents ? [] : selectedStudents        
+                      const studentToKeep = this.state.students.filter(s => !s.isSelected)
+                      const students = studentToKeep.length === totalStudents ? [] : studentToKeep        
                       const selectedStudent = Math.min(students.map(s=>s.key))            
                       this.setState({ 'students': students, selectedStudent: selectedStudent })
                       if(students.length === 0){

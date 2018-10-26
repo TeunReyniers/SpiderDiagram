@@ -37,7 +37,7 @@ export class Students extends Component {
                         ? 'Download all'
                         : 'Download (' + selectedStudentsCount + ')'}
                 </PrimaryButton>
-                <div style={{ padding: '10px', borderBottom: '2px solid gray' }}>
+                <div style={{ padding: '10px', borderBottom: '2px solid #ccc' }}>
                     <Checkbox label={'Students (' + studentsCount + ')'}
                         checked={studentsCount === selectedStudentsCount}
                         onChange={(e, b) => b
