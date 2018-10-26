@@ -37,22 +37,25 @@ export class Students extends Component {
                         ? 'Download all'
                         : 'Download (' + selectedStudentsCount + ')'}
                 </PrimaryButton>
-                <DefaultButton onClick={(e)=> this.props.onSelectAll() }>Select</DefaultButton>
-                <DefaultButton onClick={(e)=> this.props.onDeselectAll() }>Deselect</DefaultButton>
-                <div style={{ padding: '10px', borderBottom: '2px solid gray' }}>  
+                <div style={{ padding: '10px', borderBottom: '2px solid gray' }}>
+                    <Checkbox label={'Students (' + studentsCount + ')'}
+                        checked={studentsCount === selectedStudentsCount}
+                        onChange={(e, b) => b
+                            ? this.props.onSelectAll()
+                            : this.props.onDeselectAll()}></Checkbox>
                 </div>
-                
 
-     { 
-         
-           this.props.items.sort(this._compareStudents).map((item, index)=> <div style={{ padding: '10px', background: index % 2 === 0 ? '#ddd' : '#eee' }} >
-                <Checkbox isSelected={item.isSelected}
-                    label={item.name}
-                    onChange={(e, b) => { this.props.onSelectionChange(item.key, b) }} />
-            </div>
-        )}
-             {  // <List items={this.props.items.sort(this._compareStudents)} onRenderCell={this._renderCheckboxCell} />
-             }
+
+                {/* {
+
+                    this.props.items.sort(this._compareStudents).map((item, index) => <div style={{ padding: '10px', background: index % 2 === 0 ? '#ddd' : '#eee' }} >
+                        <Checkbox checked={item.isSelected}
+                            label={item.name}
+                            onChange={(e, b) => { this.props.onSelectionChange(item.key, b) }} />
+                    </div>
+                    )} */}
+                 <List items={this.props.items.sort(this._compareStudents)} onRenderCell={this._renderCheckboxCell} />
+            
             </div>
             <Dialog
                 hidden={this.state.hideDialog}
@@ -107,7 +110,7 @@ export class Students extends Component {
     _renderCheckboxCell(item, index) {
         return (
             <div style={{ padding: '10px', background: index % 2 === 0 ? '#ddd' : '#eee' }} >
-                <Checkbox isSelected={item.isSelected}
+                <Checkbox checked={item.isSelected}
                     label={item.name}
                     onChange={(e, b) => { this.props.onSelectionChange(item.key, b) }} />
             </div>
