@@ -244,12 +244,12 @@ class App extends Component {
       : lastTypeKey
 
     this.state = {
-      settings: settings,
-      styles: styles,
-      types: types,
+      settings,
+      styles,
+      types,
       students: [],
-      styleKey: styleKey,
-      typeKey: typeKey,
+      styleKey,
+      typeKey,
       exportWindowVisible: false,
       importWindowVisible: false,
       exportTypes: [],
