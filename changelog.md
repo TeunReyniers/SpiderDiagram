@@ -30,3 +30,4 @@
 - When statrting the program the active style/type is now the same as when it was last closed
 - message improvements
 - After duplicating a style/type it becomes the active style/type
+- Bug fix where app would not fully close and use a lot cpu cycles
