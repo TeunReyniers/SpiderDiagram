@@ -49,6 +49,8 @@ export class Header extends Component {
       typeEditOpen: false,
       whatsnewOpen: false,
       new: false,
+      deleteStyleErrorHidden: true,
+      deleteTypeErrorHidden: true
     }
   }
 
@@ -96,8 +98,10 @@ export class Header extends Component {
           iconProps={{ iconName: 'Delete' }}
           title='Delete this style'
           ariaLabel='Delete this style'
-          onClick={() => {
-            this.setState({ deleteStyleHidden: false })
+          onClick={() => { 
+            this.props.items.styleKey === 0 
+            ? this.setState({ deleteStyleErrorHidden: false })
+            : this.setState({ deleteStyleHidden: false })
           }} />
         <Dialog
           hidden={this.state.deleteStyleHidden}
@@ -114,16 +118,38 @@ export class Header extends Component {
             isBlocking: false,
             containerClassName: 'ms-dialogMainOverride'
           }}
-        >
+        >         
           {null /** You can also include null values as the result of conditionals */}
           <DialogFooter>
-            <PrimaryButton onClick={() => {
+          <PrimaryButton onClick={() => {
               this.props.onChange('StyleDeleted', { key: this.props.items.styleKey })
               this.setState({ deleteStyleHidden: true })
             }} text="Yes" />
             <DefaultButton onClick={() => this.setState({ deleteStyleHidden: true })} text="No" />
           </DialogFooter>
         </Dialog>
+        <Dialog
+          hidden={this.state.deleteStyleErrorHidden}
+          onDismiss={() => this.setState({ deleteStyleErrorHidden: true })}
+          dialogContentProps={{
+            type: DialogType.normal,
+            title: 'Delete Style',
+            subText:
+              'This style can not be deleted'
+          }}
+          modalProps={{
+            titleAriaId: 'myLabelId',
+            subtitleAriaId: 'mySubTextId',
+            isBlocking: false,
+            containerClassName: 'ms-dialogMainOverride'
+          }}
+        ><DialogFooter>
+        <PrimaryButton onClick={() => {
+          this.setState({ deleteStyleErrorHidden: true })
+        }} text="Ok" />
+       
+      </DialogFooter>
+      </Dialog>
       </div>
       <div className="flexColumns">
         <div style={{ margin: 'auto 5px auto 30px' }}>
@@ -162,7 +188,9 @@ export class Header extends Component {
           title='Delete this Type'
           ariaLabel='Delete this Type'
           onClick={() => {
-            this.setState({ deleteTypeHidden: false })
+            this.props.items.typeKey === 0 
+            ? this.setState({ deleteTypeErrorHidden: false })
+            : this.setState({ deleteTypeHidden: false })
           }} />
         <Dialog
           hidden={this.state.deleteTypeHidden}
@@ -188,6 +216,28 @@ export class Header extends Component {
             }} text="Yes" />
             <DefaultButton onClick={() => this.setState({ deleteTypeHidden: true })} text="No" />
           </DialogFooter>
+        </Dialog>
+        <Dialog
+          hidden={this.state.deleteTypeErrorHidden}
+          onDismiss={() => this.setState({ deleteTypeErrorHidden: true })}
+          dialogContentProps={{
+            type: DialogType.normal,
+            title: 'Delete type',
+            subText:
+              'This type can not be deleted'
+          }}
+          modalProps={{
+            titleAriaId: 'myLabelId',
+            subtitleAriaId: 'mySubTextId',
+            isBlocking: false,
+            containerClassName: 'ms-dialogMainOverride'
+          }}
+          ><DialogFooter>
+          <PrimaryButton onClick={() => {
+            this.setState({ deleteTypeErrorHidden: true })
+          }} text="Ok" />
+         
+        </DialogFooter>
         </Dialog>
       </div>
       <div className="flexColumns">
