@@ -42,7 +42,7 @@ export class RenderOptions extends Component {
                             />
                         </div>
                         <div style={{marginTop: '18px', marginLeft: '5px'}}>
-                            <Label>{this.props.items.viewScale === 0
+                            <Label>{this.props.items.viewScale < 5
                                 ? 'Auto'
                                 : this.props.items.viewScale + '%'}</Label>
                         </div>
