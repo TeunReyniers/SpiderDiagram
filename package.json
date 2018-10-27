@@ -1,6 +1,6 @@
 {
   "name": "spiderdiagram",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "An Electron app to make spider diagrams",
   "author": "Teun Reyniers",
   "private": true,
