@@ -55,6 +55,9 @@ export class Header extends Component {
   }
 
   render() {
+
+    const selectedStyle = this.props.items.styles.filter(s=>s.key === this.props.items.styleKey)[0]
+    const selectedType = this.props.items.types.filter(s=>s.key === this.props.items.typeKey)[0]
     return <div className="flexColumns"
       style={{
         padding: '5px 10px',
@@ -109,8 +112,8 @@ export class Header extends Component {
           dialogContentProps={{
             type: DialogType.normal,
             title: 'Delete Style',
-            subText:
-              'Are you sure you want to delete the active style?'
+            subText:''
+              
           }}
           modalProps={{
             titleAriaId: 'myLabelId',
@@ -118,8 +121,10 @@ export class Header extends Component {
             isBlocking: false,
             containerClassName: 'ms-dialogMainOverride'
           }}
-        >         
-          {null /** You can also include null values as the result of conditionals */}
+        >        
+        <span> 
+          Are you sure you want to delete the style <b>{selectedStyle.name}</b>?
+         </span>
           <DialogFooter>
           <PrimaryButton onClick={() => {
               this.props.onChange('StyleDeleted', { key: this.props.items.styleKey })
@@ -198,8 +203,7 @@ export class Header extends Component {
           dialogContentProps={{
             type: DialogType.normal,
             title: 'Delete type',
-            subText:
-              'Are you sure you want to delete the active type?'
+            subText:''
           }}
           modalProps={{
             titleAriaId: 'myLabelId',
@@ -208,7 +212,9 @@ export class Header extends Component {
             containerClassName: 'ms-dialogMainOverride'
           }}
         >
-          {null /** You can also include null values as the result of conditionals */}
+           <span> 
+          Are you sure you want to delete the type <b>{selectedType.name}</b>?
+         </span>
           <DialogFooter>
             <PrimaryButton onClick={() => {
               this.props.onChange('TypeDeleted', { key: this.props.items.typeKey })
