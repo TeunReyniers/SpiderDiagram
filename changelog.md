@@ -23,3 +23,8 @@
 - Select all / deselect all for students
 - Faster loading speeds
 - UI improvements
+
+# Version: 0.1.7
+- Removed default data
+- Added message default style/type can not be removed
+- When statrting the program the active style/type is now the same as when it was last closed

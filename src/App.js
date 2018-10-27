@@ -231,25 +231,25 @@ class App extends Component {
   constructor() {
     super()
 
+    const settings = settingsStore.get('settings')
+    const styles = styleStore.get('styles')
+    const types = typeStore.get('types')
+    const lastStyleKey = styleStore.get('defaultStyleKey')
+    const styleKey = styles.filter(s=>s.key === lastStyleKey).length === 0
+      ? 0
+      : lastStyleKey
+    const  lastTypeKey = typeStore.get('defaultTypeKey')
+    const typeKey = types.filter(s=>s.key === lastTypeKey).length === 0
+      ? 0
+      : lastTypeKey
+
     this.state = {
-      settings: settingsStore.get('settings'),
-      styles: styleStore.get('styles'),
-      types: typeStore.get('types'),
-      students: [
-        {
-          name: "Teun Reyniers",
-          text: "Teun Reyniers",
-          scores: [1, 2, 5, 4, 2, 1, 5],
-          key: 0
-        }, {
-          name: "Piet reyniers",
-          text: "Piet reyniers",
-          scores: [2, 3, 5, 3, 2, 1, 5],
-          key: 1
-        }
-      ],
-      styleKey: 0, //styleStore.get('defaultStyleKey'),
-      typeKey: 0,  // typeStore.get('defaultTypeKey'),
+      settings: settings,
+      styles: styles,
+      types: types,
+      students: [],
+      styleKey: styleKey,
+      typeKey: typeKey,
       exportWindowVisible: false,
       importWindowVisible: false,
       exportTypes: [],
