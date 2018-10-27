@@ -275,15 +275,17 @@ class App extends Component {
             version={appVersion}
             onChange={(c, e) => {
               if (c === 'StyleAdded') {
-                let array = [
+                const styleKey =  Math.max(...this.state.styles.map(s => s.key)) + 1
+                const styles = [
                   ...this.state.styles.map(s => s),
                   {
-                    key: Math.max(...this.state.styles.map(s => s.key)) + 1,
+                    key: styleKey,
                     name: e.name,
                     style: e.style
                   }]
-                this.setState({ styles: array })
-                styleStore.set('styles', array)
+                this.setState({ styles, styleKey })
+                styleStore.set('styles', styles)
+                styleStore.set('defaultStyleKey', styleKey)
               } else if (c === 'StyleEdited') {
                 let array = [
                   ...this.state.styles.filter(s => s.key !== e.key), e]
@@ -296,14 +298,16 @@ class App extends Component {
                   styleStore.set('styles', array)
                 }
               } else if (c === 'TypeAdded') {
-                let array = [
+                const typeKey = Math.max(...this.state.types.map(s => s.key)) + 1
+                const types = [
                   ...this.state.types.map(s => s), {
-                    key: Math.max(...this.state.types.map(s => s.key)) + 1,
+                    key: typeKey,
                     name: e.name,
                     type: e.type
                   }]
-                this.setState({ types: array })
-                typeStore.set('types', array)
+                this.setState({ types, typeKey })
+                typeStore.set('types', types)
+                typeStore.set('defaultTypeKey', typeKey)
               } else if (c === 'TypeEdited') {
                 let array = [
                   ...this.state.types.filter(s => s.key !== e.key), e]

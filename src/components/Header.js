@@ -85,24 +85,24 @@ export class Header extends Component {
           }} />
         <IconButton
           iconProps={{ iconName: 'Edit' }}
-          title="Edit"
-          ariaLabel="Edit"
+          title="Edit active style"
+          ariaLabel="Edit active style"
           onClick={() => {
             this.setState({ styleEditOpen: true })
             this.setState({ new: false })
           }} />
         <IconButton
           iconProps={{ iconName: 'Copy' }}
-          title='Make a copy'
-          ariaLabel='Make a copy'
+          title='Duplicate active style'
+          ariaLabel='Duplicate active style'
           onClick={() => {
             this.setState({ styleEditOpen: true })
             this.setState({ new: true })
           }} />
         <IconButton
           iconProps={{ iconName: 'Delete' }}
-          title='Delete this style'
-          ariaLabel='Delete this style'
+          title='Delete active style'
+          ariaLabel='Delete active style'
           onClick={() => { 
             this.props.items.styleKey === 0 
             ? this.setState({ deleteStyleErrorHidden: false })
@@ -176,24 +176,24 @@ export class Header extends Component {
           }} />
         <IconButton
           iconProps={{ iconName: 'Edit' }}
-          title="Edit"
-          ariaLabel="Edit"
+          title="Edit active type"
+          ariaLabel="Edit active type"
           onClick={() => {
             this.setState({ typeEditOpen: true })
             this.setState({ new: false })
           }} />
         <IconButton
           iconProps={{ iconName: 'Copy' }}
-          title='Make a copy'
-          ariaLabel='Make a copy'
+          title='Duplicate active type'
+          ariaLabel='Duplicate active type'
           onClick={() => {
             this.setState({ typeEditOpen: true })
             this.setState({ new: true })
           }} />
         <IconButton
           iconProps={{ iconName: 'Delete' }}
-          title='Delete this Type'
-          ariaLabel='Delete this Type'
+          title='Delete active type'
+          ariaLabel='Delete active type'
           onClick={() => {
             this.props.items.typeKey === 0 
             ? this.setState({ deleteTypeErrorHidden: false })
