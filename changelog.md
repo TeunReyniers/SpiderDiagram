@@ -28,3 +28,5 @@
 - Removed default data
 - Added message default style/type can not be removed
 - When statrting the program the active style/type is now the same as when it was last closed
+- message improvements
+- After duplicating a style/type it becomes the active style/type
