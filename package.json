@@ -8,12 +8,12 @@
     "open": false
   },
   "devDependencies": {
+    "copyfiles": "^2.1.0",
     "electron": "^3.0.0",
-    "electron-builder": "^20.28.4",
+    "electron-builder": "^20.40.2",
     "electron-builder-squirrel-windows": "^20.28.3",
     "foreman": "^3.0.1",
-    "react-scripts": "^1.1.5",
-    "copyfiles": "^2.1.0"
+    "react-scripts": "^3.0.0"
   },
   "dependencies": {
     "jsoneditor-react": "^0.1.9",
