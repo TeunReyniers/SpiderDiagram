@@ -1,3 +1,6 @@
+# Version: 0.1.8
+- Security issues fixed
+
 # Version: 0.1.7
 - Removed default data
 - Added message default style/type can not be removed
