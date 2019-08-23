@@ -1,3 +1,6 @@
+# Version: 0.1.9
+- Security issues fixed
+
 # Version: 0.1.8
 - Security issues fixed
 
