@@ -1,3 +1,5 @@
+This project is been archived the successor can be found at https://github.com/teunreyniers/rosette
+
 # SpiderDiagram
 ## About
 This app makes a customizable diagram of test results so that the student kan decide which parts he need to study again.
